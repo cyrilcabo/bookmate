@@ -1,0 +1,100 @@
+import React from 'react';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import FormDetails from './BookingForm/formdetails';
+import FormPayment from './BookingForm/formpayment';
+import CardContainer from './PropertyView/cardcontainer';
+import makeStyles from '@material-ui/styles/makeStyles';
+
+const useStyle = makeStyles({
+	root: {
+		display: "flex",
+		flexDirection: "column",
+		width: "100%",
+	},
+	btnGroup: {
+		flex: 1,
+	},
+});
+
+const BookingForm = (props) => {
+	const classes = useStyle();
+	const [state, setState] = React.useState({activeStep: 0});
+	const [isDisabled, setDisabled] = React.useState(true);
+	
+	const [currentBooking, setBooking] = React.useState({
+		"First Name": "", 
+		"Last Name": "", 
+		"Email Address": "", 
+		"Number": "", 
+		"Address": "", 
+		"Requests": "",
+		...props.user.details,
+	});
+	const [paymentMode, setPaymentMode] = React.useState("Pay at property");
+	
+	const validate = () => {
+		for (let val in currentBooking) {
+			setDisabled(true);
+			if (!currentBooking[val] && val !== "Requests") return false;
+		}
+		setDisabled(false);
+	}
+	
+	React.useEffect(() => {
+		validate();
+	}, [currentBooking]);
+	
+	const Form = (state.activeStep == 0) 
+					?<FormDetails 
+						currentBooking={currentBooking} 
+						setBooking={setBooking}
+						date={props.date}
+						setDate={props.setDate}
+						validate={validate}
+					/> 
+					:<FormPayment 
+						paymentMode={paymentMode}
+						setPaymentMode={setPaymentMode}
+						price={props.roomPrice.dPrice || props.roomPrice.price}
+					/>;
+	const handleBack = () => setState({...state, activeStep: 0});
+	const handleNext = () => {
+		switch (state.activeStep) {
+			case 0:
+				break;
+			case 1:
+				props.confirmBooking(currentBooking, paymentMode);
+				break;
+			default: return false;
+		}
+		setState({...state, activeStep: 1});
+	};
+	return (
+		<CardContainer title={(state.activeStep == 0) ?"User details: " :"Payment method: "} className={classes.root}>
+			<Grid item className={classes.btnGroup}>
+				{Form}
+			</Grid>
+			<Grid item container justify="center" spacing={2} style={{marginTop: 20}}>
+				<Grid item>
+					<Button 
+						variant="contained" 
+						disabled={(state.activeStep==0) ?true :false} 
+						onClick={handleBack}
+					> Back </Button>
+				</Grid>
+				<Grid item>
+					<Button 
+						variant="contained" 
+						disabled={!state.activeStep ?isDisabled :false}
+						onClick={handleNext}
+						color={(state.activeStep==0) ?"primary" :"secondary"}
+					> {(state.activeStep==0) ?"Next" :"Confirm"} </Button>
+				</Grid>
+			</Grid>
+		</CardContainer>
+	);
+}
+
+export default BookingForm;
