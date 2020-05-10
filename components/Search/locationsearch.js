@@ -28,7 +28,7 @@ const LocationSearch = (props) => {
 		setOpen(true);
 		setAnchor(e.target.parentElement.parentElement);
 		
-		const results = await fetch(`http://localhost:3000/api/fetchsearch?location=${e.target.value}`).then(res => res.json()).then(data => data.result);
+		const results = await fetch(`https://bookmate.herokuapp.com/api/fetchsearch?location=${e.target.value}`).then(res => res.json()).then(data => data.result);
 		setResults(results);
 	};
 	let handleSelectLocation = (e) => {
