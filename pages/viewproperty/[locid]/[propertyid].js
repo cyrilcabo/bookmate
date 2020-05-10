@@ -25,7 +25,7 @@ const PropertyView = (props) => {
 	const handleBook = async (room) => {
 		const {rooms, images, imgSrc, price, ...newProperty} = property;
 		const {state, ...newRoom} = room;
-		await fetch('http://localhost:3000/api/selectroom', {
+		await fetch('https://bookmate.herokuapp.com/api/selectroom', {
 			'method': 'POST',
 			'headers': {
 				'content-type': 'application/json'
@@ -69,7 +69,7 @@ const PropertyView = (props) => {
 
 PropertyView.getInitialProps = async ({req, query}) => {
 	const path = (req) ?query :Router.query;
-	const result = await fetch(`http://localhost:3000/api/viewproperty/${path.locid}/${path.propertyid}`).then(res => res.json());
+	const result = await fetch(`https://bookmate.herokuapp.com/api/viewproperty/${path.locid}/${path.propertyid}`).then(res => res.json());
 	return {property: result.property, locId: result.locId};
 }
 
