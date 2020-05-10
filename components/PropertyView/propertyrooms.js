@@ -5,7 +5,7 @@ import PropertyContainerTest from '../PropertyContainer/propertycontainertest';
 
 const PropertyRooms = (props) => {
 	const rooms = props.rooms.map(room => {
-		const disabled = !!room.state.available;
+		const disabled = !(!!room.state.available);
 		return <PropertyContainerTest
 			price={room.price} 
 			rating={5}
