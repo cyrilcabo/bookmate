@@ -32,7 +32,7 @@ const ViewBooking = (props) => {
 ViewBooking.getInitialProps = async ({req, query}) => {
 	const params = (req) ?query :Router.query;
 	const {hotelid, bookingid} = params;
-	const bookingDetails = await fetch(`http://localhost:3000/api/fetchbooking?hotelid=${hotelid}&bookingid=${bookingid}`).then(res => res.json());
+	const bookingDetails = await fetch(`https://bookmate.herokuapp.com/api/fetchbooking?hotelid=${hotelid}&bookingid=${bookingid}`).then(res => res.json());
 	return {
 		bookingId: bookingDetails.bookingId,
 		booking: {
