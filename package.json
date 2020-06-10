@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "node server.js"
+    "start": "next start -p $PORT"
   },
   "keywords": ["hotel", "booking", "app", "bookmate"],
   "author": "cyrilcabo",
