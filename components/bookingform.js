@@ -37,8 +37,10 @@ const BookingForm = (props) => {
 	const validate = () => {
 		for (let val in currentBooking) {
 			setDisabled(true);
-			if (!currentBooking[val] && val !== "Requests") return false;
+			if ((!currentBooking[val] || currentBooking[val].length < 2) && val !== "Requests") return false;
 		}
+		if (currentBooking["Number"].length < 11) return false;
+		if (currentBooking["Email Address"].search(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)) return false;
 		setDisabled(false);
 	}
 	
@@ -57,7 +59,7 @@ const BookingForm = (props) => {
 					:<FormPayment 
 						paymentMode={paymentMode}
 						setPaymentMode={setPaymentMode}
-						price={props.roomPrice.dPrice || props.roomPrice.price}
+						price={props.price}
 					/>;
 	const handleBack = () => setState({...state, activeStep: 0});
 	const handleNext = () => {

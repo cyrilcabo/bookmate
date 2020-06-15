@@ -3,7 +3,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import Paper from '@material-ui/core/Paper';
 
 import CardContainer from '../PropertyView/cardcontainer';
 
@@ -12,7 +11,7 @@ const UserDetails = (props) => {
 		let result = [];
 		for (let val in props.user) {
 			result.push(
-				<TableRow>
+				<TableRow key={val}>
 					<TableCell> {val} </TableCell>
 					<TableCell> {props.user[val]} </TableCell>
 				</TableRow>
@@ -22,9 +21,16 @@ const UserDetails = (props) => {
 	}
 	return (
 		<CardContainer title={"User Details"}>
-			<TableContainer component={Paper}>
+			<TableContainer>
 				<Table>
 					<TableBody>
+						{props.id
+							? <TableRow>
+								<TableCell> Booking ID: </TableCell>
+								<TableCell> {props.id} </TableCell>
+							</TableRow>
+							: ""
+						}
 						{userDetails()}
 					</TableBody>
 				</Table>

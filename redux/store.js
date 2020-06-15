@@ -6,6 +6,12 @@ const initialState = {
 		id: "",
 		details: {},
 		bookings: [],
+		currentBooking: {
+			bookDate: {start: "", end: ""},
+			locId: "",
+			property: {},
+			room: {},
+		}
 	},
 	search: {
 		id: "",
@@ -19,6 +25,14 @@ const initialState = {
 	properties: {},
 	bookings: [],
 	hot: [],
+	viewBooking: {
+		bookingId: "",
+		booking: {
+			property: {},
+			room: {},
+		},
+		user: {},
+	}
 }
 
 export default initialState;

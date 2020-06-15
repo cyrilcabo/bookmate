@@ -27,7 +27,7 @@ const useStyle = makeStyles({
 const Calendar = (props) => {
 	const classes = useStyle();
 	return (
-		<Grid item xs={12} md={5}>
+		<Grid item {...props.width}>
 			<KeyboardDatePicker
 				className={props.isDefault ?"" :classes.datepicker}
 				fullWidth
@@ -38,9 +38,9 @@ const Calendar = (props) => {
 				color="primary"
 				inputVariant="outlined"
 				variant="inline"
+				id={props.id}
 				format="MMMM DD, YYYY"
 				margin="normal"
-				id="date-picker-inline"
 				label={props.label}
 				value={props.date}
 				onChange={props.handleDate}

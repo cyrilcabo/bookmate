@@ -1,10 +1,18 @@
 import fetch from 'isomorphic-unfetch';
 
+//use appropriate host for appropriate environment
+//Production:
+const production = 'https://bookmate.herokuapp.com';
+//Local machine development:
+const localDev = 'http://localhost:3000';
+
+const host = production;
+
 
 export function fetchProperties(id, filters, index) {
 	return {
 		type: "FETCH_PROPERTIES",
-		payload: fetch("https://bookmate.herokuapp.com/api/location/fetchproperty", {
+		payload: fetch(`${host}/api/location/fetchproperty`, {
 			method: "POST",
 			body: JSON.stringify({
 				id: id,
@@ -18,10 +26,17 @@ export function fetchProperties(id, filters, index) {
 	}
 }
 
+export function searchRandomProperty() {
+	return {
+		type: "SEARCH_RANDOM_PROPERTY",
+		payload: fetch(`${host}/api/location/randomproperty`).then(res => res.json()).then(res => res.id),
+	}
+}
+
 export function fetchFilters() {
 	return {
 		type: "FETCH_FILTERS",
-		payload: fetch("https://bookmate.herokuapp.com/api/utils/filters").then(res => res.json()),
+		payload: fetch(`${host}/api/utils/filters`).then(res => res.json()),
 	}
 }
 
@@ -48,10 +63,17 @@ export function setSearchBookDate (date) {
 	}
 }
 
+export function setCurrentBooking (room) {
+	return {
+		type: "SET_CURRENT_BOOKING",
+		payload: room,
+	}
+}
+
 export function fetchHot (limit) {
 	return {
 		type: "FETCH_HOT",
-		payload: fetch('https://bookmate.herokuapp.com/api/location/fetchhot?limit='+limit).then(data => data.json()).then(res => res.result),
+		payload: fetch(`${host}/api/location/fetchhot?limit=`+limit).then(data => data.json()).then(res => res.result),
 	}
 }
 
@@ -66,5 +88,12 @@ export function fetchBookings (bookings) {
 	return {
 		type: "FETCH_BOOKINGS",
 		payload: bookings,
+	}
+}
+
+export function viewBooking (booking) {
+	return {
+		type: "VIEW_BOOKING",
+		payload: booking
 	}
 }

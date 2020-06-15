@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MainBody from '../components/mainbody';
+import PageTemplate from '../components/PageTemplate/pagetemplate';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -12,18 +12,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Router from 'next/router';
 
+import {apiValidateUsername, apiRegister} from '../utils/api';
+
 const useStyle = makeStyles(theme => ({
-	root: {
-		color: 'white',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'column',
-		height: '70vh',
-		[theme.breakpoints.up('md')]: {
-			height: 450,
-		}
-	},
 	inputField: {
 		"& div.MuiInputBase-root": {
 			backgroundColor: 'white',
@@ -43,6 +34,8 @@ const Register = (props) => {
 	const classes = useStyle();
 	const [fieldState, setFieldState] = React.useState({username: {error: false, msg: ''}, password: {error: false, msg: ''}, confirmpassword: {error: false, msg: ''}});
 	const [user, setUser] = React.useState({username: '', password: '', confirmpassword: ''});
+	const [message, setMessage] = React.useState("");
+	
 	const handleUser = (e) => {
 		setUser({
 			...user,
@@ -53,9 +46,13 @@ const Register = (props) => {
 		const checkBlank = (id) => {
 			setFieldState({
 				...fieldState,
-				[id]: (!user[id]) ?{error: true, msg: 'Please fill out this field!'} :{error: false, msg: ''},
+				[id]: (!user[id]) 
+						?{error: true, msg: 'Please fill out this field!'} 
+						:(user[id].length < 6) 
+							?{error: true, msg: 'Minimum of 6 characters required.'} 
+							:{error: false, msg: ''},
 			});
-			if (!user[id]) return false;
+			if (!user[id] || user[id].length < 6) return true;
 		}
 		const checkPassword = () => {			
 			if (user.confirmpassword) {	
@@ -69,27 +66,28 @@ const Register = (props) => {
 		}
 		switch (e.target.id) {
 			case 'username':
-				checkBlank('username');
-				const response = await fetch(`https://bookmate.herokuapp.com/api/authentication/validateusername?username=${user.username}`).then(response => response.json());
+				if (checkBlank('username')) return;
+				const response = await apiValidateUsername(user.username);
 				setFieldState({
 					...fieldState,
-					username: (response.status==="ok") ?{error: false, msg: ''} :{error: true, msg: 'Username already exists'},
+					username: (response.status==="ok") ?fieldState['username'].error ?fieldState['username'] :{error: false, msg: ''} :{error: true, msg: 'Username already exists'},
 				});
 				break;
 			case 'password':
-				checkBlank('password');
+				if (checkBlank('password')) return;
 				checkPassword();
 				break;
 			case 'confirmpassword':
-				checkBlank('confirmpassword');
+				if (checkBlank('confirmpassword')) return;
 				checkPassword();
 				break;
 			default: return false;
 		}
 	}
+
 	const register = async () => {
+		setMessage("");
 		let validObj = {}, invalid = false;
-		console.log(fieldState);
 		for (let valid in user) {
 			validObj = {
 				...validObj,
@@ -97,74 +95,81 @@ const Register = (props) => {
 			}
 			if (!user[valid] || fieldState[valid].error) invalid = true;
 		}
-		if (invalid) {	
+		if (invalid) {
+			setMessage("Please fill the fields right.");
 			setFieldState({
 				...fieldState,
 				...validObj,
 			});
 		} else {
-			const response = await fetch('https://bookmate.herokuapp.com/api/authentication/register', {
-				method: 'POST',
-				body: JSON.stringify(user),
-				headers: {
-					'content-type': 'application/json',
-				},
-			}).then(data => data.json());
+			const response = await apiRegister(user).then(data => data.json());
 			if (response.status==="ok") Router.replace('/login?register=success');
+			else setMessage(response.message);
 		}
 	}
 	return (
-		<MainBody className={classes.root}>
-			<Grid item container justify="center">
-				<h1 style={{color: 'white'}}> Register </h1>
-			</Grid>
-			<Grid className={classes.formContainer} container justify="center" alignItems="center" direction="column" spacing={2}>
-				<Grid item container>
-					<TextField 
-						fullWidth 
-						variant="filled" 
-						label={(fieldState['username'].error) ?fieldState['username'].msg :'Username'}
-						id="username"
-						onChange={handleUser}
-						onBlur={validate}
-						value={user.username}
-						className={classes.inputField}
-						error={fieldState['username'].error}
-					/>
-					<TextField 
-						fullWidth 
-						variant="filled" 
-						label={(fieldState['password'].error) ?fieldState['password'].msg :'Password'}
-						id="password"
-						onChange={handleUser}
-						onBlur={validate}
-						value={user.password}
-						type="password"
-						className={classes.inputField}
-						error={fieldState['password'].error}
-					/>
-					<TextField 
-						fullWidth 
-						variant="filled" 
-						label={(fieldState['confirmpassword'].error) ?fieldState['confirmpassword'].msg :'Confirm password'}
-						id="confirmpassword"
-						onChange={handleUser}
-						onBlur={validate}
-						value={user.confirmpassword}
-						type="password"
-						className={classes.inputField} 
-						error={fieldState['confirmpassword'].error}
-					/>
+		<Grid item xs={12} container justify="center">
+			<PageTemplate title={"Register"}>
+				<Grid item container justify="center" alignItems="center" direction="column" xs={12}>
+					<Grid item container justify="center">
+						<h1 style={{margin: 0, marginBottom: 20}}> JOIN US </h1>
+					</Grid>
+					<Grid className={classes.formContainer} container justify="center" alignItems="center" direction="column" spacing={2}>
+						{message
+							?<p style={{margin: 0, color: 'red'}}> {message} Try again. </p>
+							:""
+						}
+						<Grid item container>
+							<form onSubmit={async (e) => {e.preventDefault(); await register()}}>
+								<TextField 
+									fullWidth 
+									variant="filled" 
+									label={(fieldState['username'].error) ?fieldState['username'].msg :'Username'}
+									id="username"
+									onChange={handleUser}
+									onBlur={validate}
+									value={user.username}
+									className={classes.inputField}
+									error={fieldState['username'].error}
+								/>
+								<TextField 
+									fullWidth 
+									variant="filled" 
+									label={(fieldState['password'].error) ?fieldState['password'].msg :'Password'}
+									id="password"
+									onChange={handleUser}
+									onBlur={validate}
+									value={user.password}
+									type="password"
+									className={classes.inputField}
+									error={fieldState['password'].error}
+								/>
+								<TextField 
+									fullWidth 
+									variant="filled" 
+									label={(fieldState['confirmpassword'].error) ?fieldState['confirmpassword'].msg :'Confirm password'}
+									id="confirmpassword"
+									onChange={handleUser}
+									onBlur={validate}
+									value={user.confirmpassword}
+									type="password"
+									className={classes.inputField} 
+									error={fieldState['confirmpassword'].error}
+								/>
+								<input style={{display: 'none'}} type="submit" />
+							</form>
+						</Grid>
+						<Grid item container>
+							<Button fullWidth variant="contained" color="primary" onClick={register}> Register </Button>
+						</Grid>
+						<Grid item justify="center" container>
+							<Button fullWidth variant="contained" color="secondary" onClick={() => Router.push('/login')}> Login </Button>
+							Already registered?
+						</Grid>
+					</Grid>
 				</Grid>
-				<Grid item container>
-					<Button fullWidth variant="contained" color="primary" onClick={register}> Register </Button>
-				</Grid>
-				<Grid item justify="center" container>
-					<Button fullWidth variant="contained" color="secondary"> Login </Button>
-					Already registered?
-				</Grid>
-			</Grid>
-		</MainBody>
+			</PageTemplate>
+		</Grid>
 	);
 }
 

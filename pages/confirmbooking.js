@@ -1,6 +1,6 @@
-import MainBody from '../components/mainbody';
 import RoomDetails from '../components/Booking/roomdetails';
 import BookingForm from '../components/bookingform';
+import PageTemplate from '../components/PageTemplate/pagetemplate';
 import Grid from '@material-ui//core/Grid';
 import Typography from '@material-ui//core/Typography';
 import Divider from '@material-ui//core/Divider';
@@ -12,7 +12,8 @@ import {connect} from 'react-redux';
 import fetch from 'isomorphic-unfetch';
 import moment from 'moment';
 
-import {fetchUser} from '../redux/actions/actions';
+import {fetchUser, setCurrentBooking} from '../redux/actions/actions';
+import {apiGetSelectedRoom, apiFetchUser, apiBookRoom} from '../utils/api';
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -32,72 +33,54 @@ const useStyle = makeStyles(theme => ({
 
 const ConfirmBooking = (props) => {
 	const classes = useStyle();
-	const {room, property, locId} = props.currentBooking;
-	const {startDate, endDate} = props.currentBooking.bookDate;
-	const [date, setDate] = React.useState({start: startDate, end: endDate});
-	
-	console.log(props.currentBooking)
+	const {room, property, locId, bookDate} = props.user.currentBooking;
+	const {start, end} = bookDate;
+	const [date, setDate] = React.useState({start: start, end: end});
 	
 	const confirmBooking = async (userDetails, paymentMode) => {
-		await fetch('https://bookmate.herokuapp.com/api/bookroom', {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({
-				hotelId: property._id,
-				locId: locId,
-				roomDetails: room,
-				propertyDetails: property,
-				userDetails: {
-					...userDetails,
-					"Payment method": paymentMode,
-					"Booking from": moment(date.start).format("MMMM DD, YYYY"),
-					"Booking to": moment(date.end).format("MMMM DD, YYYY"),
-				},
-				userId: "cyrilcabo123",
-			})
+		await apiBookRoom({
+			...userDetails,
+			"Payment method": paymentMode,
+			"Booking from": moment(date.start).format("MMMM DD, YYYY"),
+			"Booking to": moment(date.end).format("MMMM DD, YYYY"), 
+
 		}).then(res => res.json()).then(res => {
-			Router.push(`/bookings/${res.hotelId}/${res.bookingId}`);
+			Router.push(`/bookings/viewbooking?hotelid=${res.hotelId}&bookingid=${res.bookingId}`);
 		});
 	}
 	return (
-		<MainBody>
-			<Grid container className={classes.root} item xs={12} spacing={2} justify="center">
-				<Grid item xs={12}>
-					<Typography className={classes.title}> Review Booking </Typography>
-					<Divider className={classes.divider} />
+		<Grid container className={classes.root} item xs={12} justify="center">
+			<PageTemplate title={"Review booking"}>
+				<Grid item xs={12} container justify="space-around" spacing={2}>
+					<Grid item xs={12} md={6}>
+						<RoomDetails property={property} room={room}/>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<BookingForm 
+							confirmBooking={confirmBooking} 
+							date={date}
+							setDate={setDate} 
+							user={props.user}
+							price={room.price}
+						/>
+					</Grid>
 				</Grid>
-				<Grid item xs={12} md={6}>
-					<RoomDetails booking={props.currentBooking}/>
-				</Grid>
-				<Grid item xs={12} md={5}>
-					<BookingForm 
-						confirmBooking={confirmBooking} 
-						date={date}
-						setDate={setDate} 
-						user={props.user}
-						roomPrice={room.price}
-					/>
-				</Grid>
-			</Grid>
-		</MainBody>
+			</PageTemplate>
+		</Grid>
 	);
 }
 
-ConfirmBooking.getInitialProps = async ({req, store}) => {
-	const cookie = (req) ?{'Cookie': req.headers.cookie} :null;
-	if (!store.getState().user.id) await fetch('https://bookmate.herokuapp.com/api/fetchuser', {
-		'Credentials': 'include',
-		'headers': {...cookie},
-	}).then(res => res.json()).then(user => store.dispatch(fetchUser(user)));
-	const result = await fetch('https://bookmate.herokuapp.com/api/getselectedroom', {
-		'Credentials': 'include',
-		'headers': {
-			...cookie,
+ConfirmBooking.getInitialProps = async ({req, store, res}) => {
+	if (req) {
+		const {property, locId, room, bookDate} = req.session.currentBooking;
+		if (!locId && !property._id && !room._id && !bookDate.start && !bookDate.end) {
+			res.writeHead(301, {location: '/'});
+			res.end();
 		}
-	}).then(res => res.json());
-	return {currentBooking: result.booking}
+	}
+	const cookie = (req) ?{'Cookie': req.headers.cookie} :null;
+	if (!store.getState().user.id) await apiFetchUser(cookie).then(res => res.json()).then(user => store.dispatch(fetchUser(user)));
+	await apiGetSelectedRoom(cookie).then(res => res.json()).then((booking) => store.dispatch(setCurrentBooking(booking.booking)));
 }
 
 export default connect(state => ({user: state.user}))(ConfirmBooking);

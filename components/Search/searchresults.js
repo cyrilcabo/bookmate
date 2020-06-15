@@ -1,5 +1,14 @@
-import {Popper, Fade, Paper, Typography, List, ListItem, ListItemText, Divider, Grid} from '@material-ui/core/';
+import Popper from '@material-ui/core/Popper';
+import Fade from '@material-ui/core/Fade';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import makeStyles from '@material-ui/styles/makeStyles';
 import React from 'react';
 
@@ -11,8 +20,6 @@ const useStyle = makeStyles({
 	searchRes: {
 		margin: 1,
 		width: "100%",
-		flex: 1,
-		padding: 5,
 	},
 	text: {
 		flex: 1,
@@ -28,6 +35,7 @@ const useStyle = makeStyles({
 
 const SearchResults = (props) => {
 	const classes = useStyle();
+
 	const results = props.results.map((item) => {
 		return (
 			<React.Fragment key={item._id}>
@@ -55,14 +63,21 @@ const SearchResults = (props) => {
 						<Paper className={classes.searchRes}>			
 							<ClickAwayListener onClickAway={props.handleClickAway} >
 									<List>
-										{results.length
-											? results
-											: <ListItem>
-												<ListItemText
-													primary="Sorry no results are found..."
-													secondary="Try other locations..."
-												/>
-											  </ListItem>
+										{props.results.length
+											?results
+											:props.searching
+												? <ListItem> 
+													<ListItemText
+														primary={<CircularProgress />}
+														secondary={"Searching..."}
+													/>
+												</ListItem>
+												: <ListItem>
+													<ListItemText
+														primary="Sorry no results are found..."
+														secondary="Try other locations..."
+													/>
+											 	</ListItem>
 										}
 									</List>
 							</ClickAwayListener>

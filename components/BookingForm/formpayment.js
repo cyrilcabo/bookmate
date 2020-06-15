@@ -25,7 +25,7 @@ const FormPayment = (props) => {
 	return (
 		<Grid item container xs={12} justify="center">
 			<Paper className={classes.priceTag}>
-				<Grid item xs={12} container justify="flex-start">
+				<Grid item xs={12} container justify="flex-start" alignItems="center" style={{fontSize: '1.2rem'}}>
 					Total payment to be made:
 				</Grid>
 				<Divider />
@@ -37,7 +37,6 @@ const FormPayment = (props) => {
 			<FormControl fullWidth>
 				<InputLabel> Choose payment method </InputLabel>
 				<Select value={props.paymentMode} onChange={handleSelect} placeholder="Choose payment method: ">
-					<MenuItem value="Card"> Card </MenuItem>
 					<MenuItem value="Pay at property"> Pay at property </MenuItem>
 				</Select>
 			</FormControl>

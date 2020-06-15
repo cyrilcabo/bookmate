@@ -12,6 +12,7 @@ const useStyle = makeStyles(theme => ({
 		overflow: 'hidden',
 		display: 'flex',
 		flexWrap: 'wrap',
+		alignItems: 'center',
 		justifyContent: 'space-around',
 		[theme.breakpoints.up('md')]: {
 			height: 280,
@@ -35,8 +36,8 @@ const PropertyHeader = (props) => {
 		if (e.target.scrollLeft+e.target.offsetWidth === e.target.scrollWidth) setIndex(index+5);
 	}
 	
-	const images = imgSrcs.map(tile => {
-		return <GridListTile key={tile.id} style={{height: '100%'}}>
+	const images = imgSrcs.map((tile, index) => {
+		return <GridListTile key={index} style={{height: '100%'}}>
 			<img src={tile.imgSrc} alt={tile.title} />
 			<GridListTileBar title={tile.title} />
 		</GridListTile>

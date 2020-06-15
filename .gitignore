@@ -72,7 +72,6 @@ typings/
 helper.js
 samplemw.js
 sample.js
-next.config.js
 
 # dotenv environment variables file
 .env

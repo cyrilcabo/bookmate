@@ -1,165 +1,279 @@
-import MainBody from '../components/mainbody';
-import BookSearch from '../components/booksearch';
-import PreviewTest from '../components/previewtest';
-import PropertyContainerTest from '../components/PropertyContainer/propertycontainertest';
+//Material components
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@material-ui/core/Button';
+
+//Custom svg images
+import {
+	BookmateIcon, 
+	WelcomeBg,
+	WelcomeImg,
+	CheapIcon,
+	BedIcon,
+	SpeedIcon,
+	LeftBorderDesign,
+	RightBorderDesign,
+	BlackCheckIn
+} from '../public/svg-icons';
+
+//Utils
 import React from 'react';
-
-import moment from 'moment';
-
-import {connect} from 'react-redux';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
-import {fetchProperties, fetchFilters, setSearchBookDate, setSearchFilters, setSearchId, fetchHot} from '../redux/actions/actions';
 
 const useStyle = makeStyles(theme => ({
-	root: {
-		[theme.breakpoints.down("sm")]: {
-			padding: "0 !important",
-			margin: 0,
+	noMargin: {
+		margin: 0,
+	},
+	banner: {
+		height: 470,
+		position: 'relative',
+		[theme.breakpoints.down('xs')]: {
+			marginTop: 50,
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 300,
 		}
 	},
-	text: {
-		color: "white",
-		textAlign: "center",
+	bannerLogo: {
+		height: '95%',
+		width: '85%',
+		[theme.breakpoints.down('xs')]: {
+			height: '60%',
+			width: '100%'
+		}
 	},
-	prev: {
-		overflowY: "scroll",
-		height: "34vh",
+	bannerDesign: {
+		backgroundColor: '#f4f1a7',
+		borderRadius: '100%',
+		position: 'absolute',
+		zIndex: -1
 	},
-	topPrev: {
-		backgroundColor: "rgb(44, 50, 55)",
+	smallCircle: {
+		height: '30%',
+		width: 140,
 	},
-	hotPrev: {
-		backgroundColor: "rgb(89, 100, 108)",
+	bigCircle: {
+		height: '50%',
+		width: 220,
+		[theme.breakpoints.down('sm')]: {
+			display: 'none',
+		}
 	},
+	welcome: {
+		minHeight: 500,
+		position: 'relative',
+	},
+	welcomeTitle: {
+		fontSize: '4rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '3rem'
+		}
+	},
+	welcomeDetails: {
+		fontSize: '1.8rem',
+	},
+	welcomeContent: {
+		[theme.breakpoints.down('sm')]: {
+			margin: '70px 0px 70px 0px',
+		},
+		[theme.breakpoints.down('sm')]: {
+			margin: '100px 0px 50px 0px',
+		}
+	},
+	welcomeBg: {
+		position: 'absolute',
+		height: '100%',
+		width: '100%',
+		zIndex: -1,
+	},
+	welcomeImg: {
+		height: 350,
+		[theme.breakpoints.down('sm')]: {
+			width: 250,
+			height: 200,
+		}
+	},
+	amenities: {
+		minHeight: 450,
+		textAlign: 'center',
+		margin: '50px 0px 50px 0px',
+	},
+	amenitiesTitle: {
+		fontSize: '2.5rem',
+		margin: 10,
+	},
+	amenitiesDetails: {
+		fontSize: '1.8rem',
+		margin: 0,
+	},
+	catcher: {
+		minHeight: 600,
+		textAlign: 'center',
+		position: 'relative',
+		backgroundColor: '#f4f1a7',
+	},
+	borderDesign: {
+		position: 'absolute',
+		height: 200,
+		width: 200,
+		zIndex: 0,
+	},
+	leftBorderDesign: {
+		left: '5%',
+		top: '5%',
+		[theme.breakpoints.down('xs')]: {
+			left: 0,
+			top: 0
+		}
+	},
+	rightBorderDesign: {
+		right: '5%',
+		bottom: '5%',
+		[theme.breakpoints.down('xs')]: {
+			right: 0,
+			bottom: 0
+		}
+	},
+	catcherContent: {
+		[theme.breakpoints.down('sm')]: {
+			margin: '70px 0px 70px 0px'
+		}
+	},
+	catcherDetails: {
+		fontSize: '2.5rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '2rem'
+		}
+	}
 }));
 
-const index = (props) => {
+const Index = (props) => {
 	const classes = useStyle();
-	const [date, setDate] = React.useState({start: props.search.bookDate.start, end: props.search.bookDate.end});
-	const [currentLocation, setCurrentLocation] = React.useState(props.currentId);
-	const filters = props.filters;
-	const [filtered, handleFilter] = React.useState([]);
-	const [search, setSearch] = React.useState({id: currentLocation, filters: props.search.filters});
-	
-	const setFilter = (e) => handleFilter([...filtered, e]);
-	const unsetFilter = (e) => handleFilter(filtered.filter(i => i!=e));
-	const handleBook = async (locid, id) => {
-		await fetch('https://bookmate.herokuapp.com/api/setdate', {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({
-				startDate: date.start,
-				endDate: date.end,
-			}),
-		});
-		Router.push(`/viewproperty/${locid}/${id}`);
-	};
-	
-	const handleLocation = async (id) => {
-		setSearch({id: id, filters: filtered});
-	}
-	
-	const handleSearch = async () => {
-		await props.fetchProperties(search.id, filtered, 0);
-		setSearch({...search, filters: filtered});
-		props.setSearchId(search.id);
-		props.setSearchFilters(filtered);
-		props.setSearchBookDate(date);
-		Router.push('/top');
-	}
-	
-	const topOffers = props.top.properties.map(property => {
-		return <PropertyContainerTest
-					price={property.price} 
-					rating={property.ratings}
-					location={property.location}
-					amenities={property.amenities}
-					imgSrc={property.imgSrc} 
-					title={property.title}
-					details={property.details}
-					moredetails={property.moredetails}
-					handleBook={handleBook.bind(this, props.top._id, property._id)}
-				/>
-	});
-	
-	const hotOffers = props.hot.slice(0, 3).map(hot => {
-		const {property} = hot;
-		return <PropertyContainerTest
-					price={property.price} 
-					rating={property.ratings}
-					location={property.location}
-					amenities={property.amenities}
-					imgSrc={property.imgSrc} 
-					title={property.title}
-					details={property.details}
-					moredetails={property.moredetails}
-					handleBook={handleBook.bind(this, hot._id, property._id)}
-				/>
-	});
 	return (
-		<MainBody>
-			<Grid className={classes.root} container item xs={12} justify="center" direction="row" spacing={3}>
-				<Grid item md={6} xs={12}>
-					<h6 className={classes.text}> Hello guest, welcome to bookmate </h6>
-					<img src="/welcome-bg.png" className="img img-fluid" />
-					<BookSearch 
-						filters={filters}
-						setFilter={setFilter}
-						unsetFilter={unsetFilter}
-						filtered={filtered}
-						handleLocation={handleLocation}
-						setSearch={handleSearch}
-						setDate={setDate}
-						date={date}
-					/>
-				</Grid>
-				<Grid item md={5} xs={12}>
-					<h6 className={classes.text}> Hot offers </h6>
-					<PreviewTest className={[classes.hotPrev, classes.prev].join(" ")}>
-						{hotOffers}
-					</PreviewTest>
-					<h6 className={classes.text}> Top Properties </h6>
-					<PreviewTest className={[classes.topPrev, classes.prev].join(" ")}>
-						{topOffers}
-					</PreviewTest>
+		<Grid item xs={12}>
+			<Grid item xs={12} className={classes.banner} container justify="center">
+				<div style={{top: 10, left: 10}} className={[classes.bannerDesign, classes.smallCircle].join(' ')} />
+				<div style={{bottom: 10, right: 10}} className={[classes.bannerDesign, classes.smallCircle].join(' ')} />
+				<div style={{bottom: 10, left: '10%'}} className={[classes.bannerDesign, classes.bigCircle].join(' ')} />
+				<div style={{top: 10, right: '10%'}} className={[classes.bannerDesign, classes.bigCircle].join(' ')} />
+				<Grid xs={10} item style={{position: 'relative', height: '100%'}} container justify="center" alignItems="center">
+					<BookmateIcon className={classes.bannerLogo}/>
 				</Grid>
 			</Grid>
-		</MainBody>
+			<Grid item xs={12} className={classes.welcome} container justify="center">
+				<div className={classes.welcomeBg}> <WelcomeBg width="100%" height="100%" /> </div>
+				<Grid item xs={11} md={10} container justify="center" alignItems="center" className={classes.welcomeContent}>
+					<Grid item xs={12} md={5} container justify="center" alignItems="center">
+						<WelcomeImg width="100%" className={classes.welcomeImg} />
+					</Grid>
+					<Grid 
+						item 
+						xs={12} 
+						md={7}
+						spacing={2} 
+						container 
+						justify="center" 
+						direction="column" 
+						alignItems="center" 
+						style={{color: '#f6f6f6', textAlign: 'center'}}
+					>
+						<Grid item>
+							<h2 className={[classes.welcomeTitle, classes.noMargin].join(' ')}> Welcome to Bookmate </h2>
+						</Grid>
+						<Grid item>
+							<p className={[classes.welcomeDetails, classes.noMargin].join(' ')}>
+								Bookmate is a web-based booking application, designed to prioritize speed and convenience.
+								Through Bookmate, you can easily find your favorite properties, and easily book a stay at just 
+								a single tap of your fingers! 
+							</p>
+						</Grid>
+						<Grid item>
+							<Button 
+								variant="contained"
+								style={{
+									fontSize: '1.5rem', 
+									backgroundColor: '#64e6e6',
+								}}
+								onClick={() => Router.push('/top')}
+							> Book Now </Button>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
+			<Grid item xs={12} container justify="center" alignItems="center" className={classes.amenities}>
+				<Grid item xs={12} container justify="space-around" alignItems="center">
+					<Grid item xs={12} md={3} container direction="column" alignItems="center">
+						<Grid item>
+							<CheapIcon height={200} width={200} />
+						</Grid>
+						<Grid item>
+							<h2 className={classes.amenitiesTitle}> Cheap </h2>
+						</Grid>
+						<Grid item>
+							<p className={classes.amenitiesDetails}> Bookmate offers the cheapest prices on your favorite properties! </p>
+						</Grid>
+					</Grid>
+					<Grid item xs={12} md={3} container direction="column" alignItems="center">
+						<Grid item>
+							<BedIcon height={200} width={200} />
+						</Grid>
+						<Grid item>
+							<h2 className={classes.amenitiesTitle}> Comfortable </h2>
+						</Grid>
+						<Grid item>
+							<p className={classes.amenitiesDetails}> Bookmate assures you that you get to have a relaxing staycation! </p>
+						</Grid>
+					</Grid>
+					<Grid item xs={12} md={3} container direction="column" alignItems="center">
+						<Grid item>
+							<SpeedIcon height={200} width={200} />
+						</Grid>
+						<Grid item>
+							<h2 className={classes.amenitiesTitle}> Fast Service </h2>
+						</Grid>
+						<Grid item>
+							<p className={classes.amenitiesDetails}> Easily book on your favorite properties, minus all the hassle! </p>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
+			<Grid item xs={12} justify={"center"} alignItems={"center"} container className={classes.catcher}>
+				<LeftBorderDesign className={[classes.borderDesign, classes.leftBorderDesign].join(' ')} />
+				<RightBorderDesign className={[classes.borderDesign, classes.rightBorderDesign].join(' ')} />
+				<Grid className={classes.catcherContent} item xs={10} md={8} direction="column" container>
+					<Grid item container justify="center">
+						<h2 style={{margin: "20px 0px 30px 0px"}} className={classes.welcomeTitle}> Be part of Bookmate </h2>
+					</Grid>
+					<Grid item container direction="row-reverse" spacing={5}>
+						<Grid item xs={12} md={4} container justify="center" alignItems="center">
+							<BlackCheckIn height={300} width={300} />
+						</Grid>
+						<Grid item xs={12} md={8} spacing={2} container direction="column" alignItems="center">
+							<Grid item>
+								<p className={[classes.catcherDetails, classes.noMargin].join(' ')}>
+									Join the growing community of Bookmate to enjoy the hottest offers available,
+									and easily book on your favorite properties with just a few clicks!
+								</p>
+							</Grid>
+							<Grid item>
+								<Button 
+									variant="contained" 
+									style={{backgroundColor: props.isLogged ?'gray' :'#0a4f4f', fontSize: '2rem', color: 'white'}}
+									onClick={() => Router.push('/register')}
+									disabled={props.isLogged}
+								>
+									Sign up
+								</Button>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
+		</Grid>
 	);
 }
 
-index.getInitialProps = async ({store, req}) => {
-	if (!store.getState().filters.length) await store.dispatch(fetchFilters());
-	const address = await fetch('https://bookmate.herokuapp.com/api/location/randomproperty').then(result => result.json()).then(result => result.id);
-	const top = await fetch('https://bookmate.herokuapp.com/api/location/fetchproperty', {
-		method: 'POST',
-		headers: {
-			'content-type': 'application/json',
-		},
-		body: JSON.stringify({
-			index: 0,
-			filters: [],
-			id: address,
-		}),
-	}).then(res => res.json()).then(res => res.result);
-	if (req || !store.getState().hot.length) await store.dispatch(fetchHot(10));
-	
-	return {top: top};
-}
-
-const mapDispatchToProps = {
-	fetchProperties,
-	setSearchFilters,
-	setSearchBookDate,
-	setSearchId,
-	fetchHot
-}
-
-export default connect(state => ({properties: state.properties, filters: state.filters, search: state.search, hot: state.hot}), mapDispatchToProps)(index);
+export default Index;

@@ -1,28 +1,105 @@
-import MainBody from '../components/mainbody';
+//Custom components
 import LocationSearch from '../components/Search/locationsearch';
 import DatePicker from '../components/Search/datepicker';
-import PreviewTest from '../components/previewtest';
+import PreviewTest from '../components/Preview/previewtest';
 import PropertyContainerTest from '../components/PropertyContainer/propertycontainertest';
-import FilterSettings from '../components/filtersettings';
-import {Grid, FormControl, Button, Typography, Paper} from '@material-ui/core';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import React from 'react';
+import FilterSettings from '../components/Filter/filtersettings';
+import Filter from '../components/Filter/filter';
 
+//Material components
+import Hidden from '@material-ui/core/Hidden';
+import Grid from '@material-ui/core/Grid';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import ListItem from '@material-ui/core/ListItem';
+
+//Utils
+import React from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
-import {fetchProperties, setSearchFilters, fetchFilters} from '../redux/actions/actions';
-
 import {connect} from 'react-redux';
 import Router from 'next/router';
 
+//Redux actions
+import {fetchProperties, setSearchFilters, searchRandomProperty, fetchFilters} from '../redux/actions/actions';
+
+//API calls
+import {apiSetDate} from '../utils/api';
+
 const useStyle = makeStyles(theme => ({
-	root: {
-		display: "flex",
-		justifyContent: "center",
+	header: {
+		height: 150,
+		color: '#f4f5f5',
+		backgroundColor: 'black',
+		borderRadius: 10,
+		'& > div.MuiGrid-item': {
+			marginLeft: 10,
+			[theme.breakpoints.down('xs')]: {
+				marginLeft: 3,
+			}
+		},
+		[theme.breakpoints.down('sm')]: {
+			borderRadius: 0,
+		}
 	},
-	search: {
-		marginBottom: 15,
+	headerDesign: {
+		width: 30,
+		'&#hD1': {
+			height: 30,
+			backgroundColor: '#c5fefe',
+		},
+		'&#hD2': {
+			height: 50,
+			backgroundColor: '#f3f351',
+		},
+		'&#hD3': {
+			height: 70,
+			backgroundColor: '#0a4f4f',
+		},
+		[theme.breakpoints.down('xs')]: {
+			width: 15,
+			'&#hD1': {
+				height: 10,
+			},
+			'&#hD2': {
+				height: 20,
+			},
+			'&#hD3': {
+				height: 30,
+			},
+		}
+	},
+	headerTitle: {
+		fontSize: '4rem',
+		margin: 0,
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '2.5rem'
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.5rem'
+		}
+	},
+	searchOptions: {
+		position: 'sticky',
+		top: 0,
+		alignSelf: 'flex-start',
+		justifyContent: 'flex-end',
+		[theme.breakpoints.down('sm')]: {
+			position: 'relative',
+			justifyContent: 'center',
+			marginBottom: 15,
+		},
+		'& > div.MuiPaper-root': {
+			padding: 5, 
+			backgroundColor: 'black', 
+			width: '90%',
+			[theme.breakpoints.down('sm')]: {
+				width: '100%',
+			}
+		}
 	},
 	dateContainer: {
 		backgroundColor: "black",
@@ -35,7 +112,7 @@ const useStyle = makeStyles(theme => ({
 const Top = (props) => {
 	const classes = useStyle();
 	const [date, setDate] = React.useState({start: props.search.bookDate.start, end: props.search.bookDate.end});
-	const [currentLocation, setCurrentLocation] = React.useState(props.currentId);
+	const [currentLocation, setCurrentLocation] = React.useState(props.search.id);
 	const filters = props.filters;
 	const [filtered, handleFilter] = React.useState(props.search.filters);
 	const [search, setSearch] = React.useState({id: currentLocation, filters: props.search.filters});
@@ -43,17 +120,8 @@ const Top = (props) => {
 	const setFilter = (e) => handleFilter([...filtered, e]);
 	const unsetFilter = (e) => handleFilter(filtered.filter(i => i!=e));
 	const handleBook = async (locid, id) => {
-		await fetch('https://bookmate.herokuapp.com/api/setdate', {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({
-				startDate: date.start,
-				endDate: date.end,
-			})
-		});
-		Router.push(`/viewproperty/${locid}/${id}`);
+		await apiSetDate(date.start, date.end);
+		Router.push(`/property?locid=${locid}&propertyid=${id}`);
 	};
 	
 	const handleLocation = async (id) => {
@@ -71,74 +139,102 @@ const Top = (props) => {
 		await props.fetchProperties(search.id, filtered, props.properties[search.id].index+10);
 	}
 	
-	const results = props.properties[search.id].properties.map(item => {
+	const results = props.properties[search.id].properties.map((item, index) => {
 		return <PropertyContainerTest
-				price={item.price} 
-				rating={item.ratings}
-				location={item.location}
-				amenities={item.amenities}
-				imgSrc={item.imgSrc} 
-				title={item.title}
-				details={item.details}
-				moredetails={item.moredetails}
-				handleBook={handleBook.bind(this, props.properties[search.id]._id, item._id)}
-			/>
+			price={item.price} 
+			rating={item.ratings}
+			location={item.location}
+			amenities={item.amenities}
+			imgSrc={item.imgSrc} 
+			title={item.title}
+			details={item.details}
+			moredetails={item.moredetails}
+			handleBook={handleBook.bind(this, props.properties[search.id]._id, item._id)}
+			key={index}
+		/>
 	})
 	
 	return (
-		<MainBody className={classes.root}>
-			<Grid item md={10}>
-				<FormControl fullWidth className={classes.search}>
-					<Grid container direction="row">	
-						<Grid item xs={12}>
-							<LocationSearch 
-								filters={filters}
-								setFilter={setFilter}
-								unsetFilter={unsetFilter}
-								filtered={filtered}
-								handleLocation={handleLocation}
-								setSearch={handleSearch}
-							/>
-						</Grid>
-						<Paper className={classes.dateContainer}>
+		<Grid item xs={12} container justify="center" style={{marginTop: 50}}>
+			<Grid item xs={12} md={11} container direction="column" alignItems="center" spacing={2}>
+				<Grid item className={classes.header} container justify="center" alignItems="center">
+					<Grid item className={classes.headerDesign} id={"hD1"} />	
+					<Grid item className={classes.headerDesign} id={"hD2"} />	
+					<Grid item className={classes.headerDesign} id={"hD3"} />						
+					<Grid item>
+						<p className={classes.headerTitle}> Search top properties </p>
+					</Grid>
+				</Grid>
+				<Grid item container>
+					<LocationSearch
+						filters={filters}
+						setFilter={setFilter}
+						unsetFilter={unsetFilter}
+						filtered={filtered}
+						handleLocation={handleLocation}
+						setSearch={handleSearch}
+					/>
+				</Grid>
+				<Grid item container direction="row-reverse" justify="space-around">
+					<Grid item container xs={12} md={3} className={classes.searchOptions}>
+						<Paper>
 							<DatePicker 
 								setDate={setDate}
 								date={date}
+								width={{xs:12}}
 							/>
+							<Hidden smDown>
+								<Filter
+									filters={filters}
+									setFilter={setFilter}
+									unsetFilter={unsetFilter}
+									filtered={filtered}
+									handleLocation={handleLocation}
+									setSearch={handleSearch}
+									style={{
+										color: '#f4f5f5'
+									}}
+								/>
+							</Hidden>
 						</Paper>
 					</Grid>
-				</FormControl>
-				<InfiniteScroll
-					dataLength={props.properties[search.id].properties.length}
-					next={fetchNext}
-					hasMore={props.properties[search.id].hasMore}
-					loader={<h4 style={{textAlign: "center"}}> Loading more items... </h4>}
-					endMessage={""}
-					style={{
-						width: "100%",
-					}}
-				>
-					<PreviewTest filter={search.filters} location={props.properties[search.id].location}>
-							{results}
-					</PreviewTest>
-				</InfiniteScroll>
+					<Grid item xs={12} md={9} style={{boxShadow: '0px 1px 4px black', backgroundColor: 'white', borderRadius: 2}}>
+						<InfiniteScroll
+							dataLength={props.properties[search.id].properties.length}
+							next={fetchNext}
+							hasMore={props.properties[search.id].hasMore}
+							loader={<h4 style={{textAlign: "center"}}> Loading more items... </h4>}
+							endMessage={""}
+							style={{
+								width: "100%",
+							}}
+						>
+							<PreviewTest 
+								filter={search.filters} 
+								location={props.properties[search.id].location}
+							>
+									{results}
+							</PreviewTest>
+						</InfiniteScroll>
+					</Grid>
+				</Grid>
 			</Grid>
-		</MainBody>
+			<style jsx global>{`
+				body {
+					background-color: #f6ffff !important;
+				}
+			`}</style>
+		</Grid>
 	);
 }
 
 Top.getInitialProps = async ({store, req, isLogged}) => {
 	const state = store.getState();
-	let id;
 	if (!state.filters.length) await store.dispatch(fetchFilters());
 	if (!state.search.id) {	
-		id = await fetch('https://bookmate.herokuapp.com/api/location/randomproperty').then(res => res.json()).then(res => res.id);
-		console.log(store.getState());
-		await store.dispatch(fetchProperties(id, [], 0));
-	} else {
-		id = state.search.id;
+		await store.dispatch(searchRandomProperty());
+		await store.dispatch(fetchProperties(store.getState().search.id, [], 0));
 	}
-	return {currentId: id};
 }
 
 const mapDispatchToProps = {

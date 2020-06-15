@@ -6,6 +6,7 @@ const useStyle = makeStyles({
 	label: {
 		padding: 5,
 		textAlign: "center",
+		color: '#0a4f4f'
 	},
 });
 
@@ -28,6 +29,9 @@ const Filter = (props) => {
 							checked={(props.filtered.find(i => i==item)) ?true :false}
 							onChange={handleChange.bind(this, item)}
 							value={item}
+							style={{
+								color: '#0a4f4f'
+							}}
 						/>
 					}	
 					label={item}
@@ -36,7 +40,7 @@ const Filter = (props) => {
 			);
 	});
 	return (
-		<FormControl component="fieldset">
+		<FormControl component="fieldset" style={props.style}>
 			<FormLabel className={classes.label}> Filters </FormLabel>
 			<FormGroup>
 				<Grid container direction="row" justify="center">

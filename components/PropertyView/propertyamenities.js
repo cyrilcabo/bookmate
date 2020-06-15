@@ -12,8 +12,8 @@ const useStyle = makeStyles({
 	},
 	span: {
 		padding: 2,
-		margin: 2,
-		backgroundColor: "gray",
+		margin: "2px 2px 2px 0px",
+		backgroundColor: "#f4f4a7",
 		borderRadius: 2,
 		boxShadow: "0 0 1px",
 	},

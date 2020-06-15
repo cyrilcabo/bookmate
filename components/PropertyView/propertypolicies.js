@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 
 const PropertyPolicies = (props) => {
 	return (
-		<CardContainer title={"Property Policies"}>
+		<CardContainer title={"Property Policies"} style={{minHeight: 200}}>
 			<Typography style={{textAlign: 'justify'}}> {props.policies} </Typography>
 		</CardContainer>
 	);

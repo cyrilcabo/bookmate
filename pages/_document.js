@@ -7,7 +7,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-			<meta name="viewport" content="width=device-width, user-scalable=no" />
+			   <meta name="viewport" content="width=device-width, user-scalable=no" />
+         <meta name="title" content="BookMate" />
+         <meta name="description" content="A hotel-booking site, where you can search for locations you desire, then book a property within that location. It will also serve you with hot offers." />
+         <link href="/icon.ico" rel="icon" />
         </Head>
         <body>
           <Main />

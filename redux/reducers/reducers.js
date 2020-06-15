@@ -53,6 +53,11 @@ function hotReducer (state = initialState.hot, action) {
 
 function searchReducer (state = initialState.search, action) {
 	switch (action.type) {
+		case "SEARCH_RANDOM_PROPERTY_FULFILLED":
+			return {
+				...state,
+				id: action.payload,
+			};
 		case "SET_SEARCH_ID":
 			return {
 				...state,
@@ -77,6 +82,29 @@ function userReducer (state = initialState.user, action) {
 	switch (action.type) {
 		case "FETCH_USER":
 			return action.payload;
+		case "SET_CURRENT_BOOKING": {
+			return {
+				...state,
+				currentBooking: action.payload,
+			}
+		}
+		default: return state;
+	}
+}
+
+function viewBookingReducer (state = initialState.viewBooking, action) {
+	switch (action.type) {
+		case "VIEW_BOOKING":
+			const {bookingId, property, room, user} = action.payload; 
+			return {
+				...state,
+				bookingId: bookingId,
+				booking: {
+					property: property,
+					room: room,
+				},
+				user: user,
+			};
 		default: return state;
 	}
 }
@@ -88,6 +116,7 @@ const reducers = combineReducers({
 	hot: hotReducer,
 	search: searchReducer,
 	user: userReducer,
+	viewBooking: viewBookingReducer
 });
 
 const makeStore = (state=initialState) => {

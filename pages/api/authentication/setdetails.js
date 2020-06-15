@@ -1,12 +1,17 @@
 import database from '../../../utils/database';
 
-import {withSession} from 'next-session';
 import {ObjectId} from 'mongodb';
 
+export const config = {
+	api: {
+		bodyParser: false,
+	}
+}
+
 const setDetails = async (req, res) => {
-	const {isGuest, id} = req.session.user;
+	const id = req.user._id;;
 	const {details} = req.body;
-	if (isGuest) {
+	if (!req.isAuthenticated() || !req.body.details) {
 		res.json({status: 'err'});
 	} else {
 		await database().then(db => {
@@ -16,9 +21,12 @@ const setDetails = async (req, res) => {
 				}
 			});
 		}).then((result) => {
-			res.json({status: 'ok'});
+			if (result) res.json({status: 'ok'});
+			else res.json({status: 'err'});
+		}).catch(err => {
+			res.json({status: 'err'});
 		});
 	}
 }
 
-export default withSession(setDetails, {name: 'bookMate'});
+export default setDetails;

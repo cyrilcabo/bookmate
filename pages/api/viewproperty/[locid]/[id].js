@@ -4,24 +4,48 @@ import {ObjectId} from 'mongodb';
 
 const viewProperty = async (req, res) => {
 	const {locid, id} = req.query;
+	//Query database for property
 	const property = await database().then(db => {
-		return db.collection("locations").find({ _id: ObjectId(locid) }).project({
-			properties: {
-				$elemMatch: {
-					_id: ObjectId(id)
+		return db.collection("locations").aggregate([
+			{
+				$match: {
+					_id: ObjectId(locid),
+				}
+			},
+			{
+				$unwind: {
+					path: "$properties",
+					preserveNullAndEmptyArrays: true,
+				}
+			},
+			{
+				$match: {
+					"properties._id": ObjectId(id),
+				},
+			},
+			{
+				$addFields: {
+					"properties.rating": {
+						$avg: "$properties.rating",
+					}
 				}
 			}
-		}).toArray();
+		]).toArray();
 	});
-	const {rating, ...newProperty} = property[0].properties[0];
-	const newRating = rating.reduce((f, n) => f+n, 0)/rating.length;
+	//Extract unneeded properties
+	const {rooms, images, ...newProperty} = property[0].properties;
+	//Save property selection to currentbooking
+	req.session.currentBooking = {
+		...req.session.currentBooking,
+		locId: property[0]._id,
+		property: newProperty,
+	}
+
+	//Send response for UI
 	res.json({
 		status: "ok",
 		locId: property[0]._id,
-		property: {
-			...newProperty,
-			rating: newRating,
-		},
+		property: property[0].properties,
 	});
 }
 

@@ -1,24 +1,40 @@
 import database from '../../../utils/database';
-
-import {withSession} from 'next-session';
 import {ObjectId} from 'mongodb';
 
+import bcrypt from 'bcrypt';
+
+export const config = {
+	api: {
+		bodyParser: false,
+	}
+}
+
 const changePassword = async (req, res) => {
-	const {id, isGuest} = req.session.user;
+	const saltRounds = 10;
+	const id = req.user._id;
 	const {password} = req.body;
-	if (isGuest) {
+	if (!req.isAuthenticated()) {
 		res.json({status: 'err'});
 	} else {
-		await database().then(db => {
-			return db.collection('users').updateOne({_id: ObjectId(id)}, {
-				$set: {
-					password: password,
-				}
-			});
-		}).then((result) => {
-			res.json({status: 'ok'});
+		await bcrypt.hash(password, saltRounds, async (err, hash) => {
+			if (hash) {	
+				await database().then(db => {
+					return db.collection('users').updateOne({_id: ObjectId(id)}, {
+						$set: {
+							password: hash,
+						}
+					});
+				}).then((result) => {
+					if (result) res.json({status: 'ok'});
+					else res.json({status: 'err'});
+				}).catch(err => {
+					res.json({status: 'err'});
+				});
+			} else {
+				res.json({status: 'err'});
+			}
 		});
 	}
 }
 
-export default withSession(changePassword, {name: 'bookMate'});
+export default changePassword;

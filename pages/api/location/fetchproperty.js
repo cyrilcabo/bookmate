@@ -1,6 +1,12 @@
 import database from '../../../utils/database';
 import { ObjectId } from 'mongodb';
 
+export const config = {
+	api: {
+		bodyParser: false,
+	},
+}
+
 const fetchProperty = async (req, res) => {
 	const {filters, index, id} = req.body;
 	const property = await database().then(db => db.collection('locations').aggregate([
@@ -36,9 +42,7 @@ const fetchProperty = async (req, res) => {
 									amenities: "$$property.amenities",
 									imgSrc: "$$property.imgSrc",
 									price: {
-										price: {
-											$min: "$$property.rooms.price.price"
-										}
+										$min: "$$property.rooms.price"
 									},
 									ratings: {
 										$avg: "$$property.rating"

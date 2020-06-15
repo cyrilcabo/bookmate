@@ -22,9 +22,7 @@ const fetchHot = async (req, res) => {
 						amenities: "$properties.amenities",
 						imgSrc: "$properties.imgSrc",
 						price: {
-							price: {
-								$min: "$properties.rooms.price.price",
-							},
+							$min: "$properties.rooms.price",
 						},
 						ratings: {
 							$avg: "$properties.rating"

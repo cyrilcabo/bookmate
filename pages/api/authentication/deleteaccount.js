@@ -1,13 +1,12 @@
 import database from '../../../utils/database';
 
-import {withSession} from 'next-session';
 import {ObjectId} from 'mongodb';
 
 const deleteAccount = async (req, res) => {
-	const {id, isGuest} = req.session.user;
+	const id = req.user._id;
 	const {deleteId} = req.body;
 	
-	if (isGuest || (id !== deleteId)) {
+	if (!req.isAuthenticated() || (id !== deleteId)) {
 		res.json({status: 'err'});
 	} else {
 		await database().then(db => {
@@ -18,4 +17,4 @@ const deleteAccount = async (req, res) => {
 	}
 }
 
-export default withSession(deleteAccount, {name: 'bookMate'});
+export default deleteAccount;
