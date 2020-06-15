@@ -14,25 +14,27 @@ const fetchBookings = async (req, res) => {
 			{
 				$project: {
 					records: {
-						$map: {
-							input: {
-								$filter: {
-									input: "$records",
-									as: "booking",
-									cond: {
-										$eq: ["$$booking.bookingId", ObjectId(bookingid)],
+						$reverseArray: {	
+							$map: {
+								input: {
+									$filter: {
+										input: "$records",
+										as: "booking",
+										cond: {
+											$eq: ["$$booking.bookingId", ObjectId(bookingid)],
+										}
 									}
+								},
+								as: "booking",
+								in: {
+									bookingId: "$$booking.bookingId",
+									propertyTitle: "$$booking.property.title",
+									roomTitle: "$$booking.room.title",
+									roomAmenities: "$$booking.room.amenities",
+									roomDetails: "$$booking.room.details",
+									price: "$$booking.room.price",
+									ratings: "$$booking.property.rating",
 								}
-							},
-							as: "booking",
-							in: {
-								bookingId: "$$booking.bookingId",
-								propertyTitle: "$$booking.property.title",
-								roomTitle: "$$booking.room.title",
-								roomAmenities: "$$booking.room.amenities",
-								roomDetails: "$$booking.room.details",
-								price: "$$booking.room.price",
-								ratings: "$$booking.property.rating",
 							}
 						}
 					}

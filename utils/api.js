@@ -140,3 +140,11 @@ export async function apiDeleteAccount (id) {
 export async function apiLogout () {
 	return await fetch(`${host}/api/authentication/logout`);
 }
+
+export async function apiFetchBilling () {
+	return await fetch(`${host}/api/payment/billing`);
+}
+
+export async function apiVerifyPayment (id) {
+	return await fetch(`${host}/api/payment/verify/${id}`);
+}

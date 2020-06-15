@@ -125,8 +125,8 @@ const Account = (props) => {
 	}
 	
 	const deleteAccount = async () => {
-		await apiDeleteAccount(props.user.id).then(res => res.json()).then((res) => {
-			if (res.status==="ok") logout();
+		await apiDeleteAccount(props.user._id).then(res => res.json()).then((res) => {
+			if (res.status==="ok") Router.replace('/');
 		});
 	}
 	

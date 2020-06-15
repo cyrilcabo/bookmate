@@ -22,6 +22,7 @@ const BookingForm = (props) => {
 	const classes = useStyle();
 	const [state, setState] = React.useState({activeStep: 0});
 	const [isDisabled, setDisabled] = React.useState(true);
+	const [paymentSecret, setPaymentSecret] = React.useState(null);
 	
 	const [currentBooking, setBooking] = React.useState({
 		"First Name": "", 
@@ -47,7 +48,11 @@ const BookingForm = (props) => {
 	React.useEffect(() => {
 		validate();
 	}, [currentBooking]);
-	
+
+	React.useEffect(() => {
+		if(state.activeStep !== 0) setDisabled(paymentMode==="Card" ?true :false);
+	}, [paymentMode, state.activeStep]);
+
 	const Form = (state.activeStep == 0) 
 					?<FormDetails 
 						currentBooking={currentBooking} 
@@ -60,8 +65,16 @@ const BookingForm = (props) => {
 						paymentMode={paymentMode}
 						setPaymentMode={setPaymentMode}
 						price={props.price}
+						setDisabled={setDisabled}
+						details={currentBooking}
+						confirmBooking={props.confirmBooking}
+						paymentSecret={paymentSecret}
+						setPaymentSecret={setPaymentSecret}
 					/>;
-	const handleBack = () => setState({...state, activeStep: 0});
+	const handleBack = () => {
+		setDisabled(false);
+		setState({...state, activeStep: 0});
+	}
 	const handleNext = () => {
 		switch (state.activeStep) {
 			case 0:
@@ -82,14 +95,14 @@ const BookingForm = (props) => {
 				<Grid item>
 					<Button 
 						variant="contained" 
-						disabled={(state.activeStep==0) ?true :false} 
+						disabled={(state.activeStep==0 || props.confirming) ?true :false} 
 						onClick={handleBack}
 					> Back </Button>
 				</Grid>
 				<Grid item>
 					<Button 
 						variant="contained" 
-						disabled={!state.activeStep ?isDisabled :false}
+						disabled={isDisabled || props.confirming}
 						onClick={handleNext}
 						color={(state.activeStep==0) ?"primary" :"secondary"}
 					> {(state.activeStep==0) ?"Next" :"Confirm"} </Button>

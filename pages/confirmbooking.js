@@ -36,8 +36,10 @@ const ConfirmBooking = (props) => {
 	const {room, property, locId, bookDate} = props.user.currentBooking;
 	const {start, end} = bookDate;
 	const [date, setDate] = React.useState({start: start, end: end});
+	const [confirming, setConfirming] = React.useState(false);
 	
 	const confirmBooking = async (userDetails, paymentMode) => {
+		setConfirming(true);
 		await apiBookRoom({
 			...userDetails,
 			"Payment method": paymentMode,
@@ -48,6 +50,7 @@ const ConfirmBooking = (props) => {
 			Router.push(`/bookings/viewbooking?hotelid=${res.hotelId}&bookingid=${res.bookingId}`);
 		});
 	}
+
 	return (
 		<Grid container className={classes.root} item xs={12} justify="center">
 			<PageTemplate title={"Review booking"}>
@@ -62,6 +65,7 @@ const ConfirmBooking = (props) => {
 							setDate={setDate} 
 							user={props.user}
 							price={room.price}
+							confirming={confirming}
 						/>
 					</Grid>
 				</Grid>

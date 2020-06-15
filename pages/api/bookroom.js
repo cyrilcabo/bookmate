@@ -15,11 +15,18 @@ const bookRoom = async (req, res) => {
 	//Generate a random booking id
 	const newBookingId = ObjectId();
 	
+	//Validate if request is valid
+	const {_id} = req.user || req.session.user; 
+	if (!(room._id && property._id && locId && _id && userDetails["First Name"])) {
+		res.json({status: 'err', msg: 'Invalid request.'});
+		res.end();
+	}
+
 	//Extract user information
 	const {"Booking from": bFrom, "Booking to": bTo, "Payment method": payment, Requests, ...newUserDetails} = userDetails;
 
 	//Checks if user has paid
-	const paid = false;
+	const paid = req.session.currentBooking[req.session.currentBooking.paymentId];
 	
 	const Status = paid ?"Paid" :"Unpaid";
 
@@ -124,6 +131,7 @@ const bookRoom = async (req, res) => {
       locId: "",
       property: {},
       room: {},
+      paymentId: "",
     }
 
 	res.json({status: "ok", bookingId: newBookingId, hotelId: property._id});

@@ -23,16 +23,11 @@ import {fetchUser} from '../redux/actions/actions';
 //API calls
 import {apiFetchUser} from '../utils/api';
 
-const useStyle = makeStyles({
-	
-});
-
 const Bookings = (props) => {
-	const classes = useStyle();
 	const handleBook = (hotelid, bookingid) => {
 		Router.push(`/bookings/viewbooking?hotelid=${hotelid}&bookingid=${bookingid}`);
 	}
-	const bookings = props.user.bookings.map((booking, index) => {
+	const bookings = props.user.bookings.reverse().map((booking, index) => {
 		const date = <p style={{margin: 0, textAlign: 'right'}}> {moment(booking.date.from).format("MM/DD/YYYY")} - {moment(booking.date.to).format("MM/DD/YYYY")} </p>
 		return <PropertyContainerTest
 					key={index}

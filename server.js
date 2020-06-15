@@ -15,6 +15,11 @@ const handle = nextApp.getRequestHandler()
 //Import MongoDB utilities
 const {ObjectId, MongoClient} = require('mongodb')
 
+//Configure Stripe utilities
+const stripe = require('stripe')(process.env.STRIPE_KEY, {
+  maxNetworkRetries: 2,
+});
+
 //Import security utils
 const bcrypt = require('bcrypt')
 
@@ -105,6 +110,7 @@ app.use((req, res, next) => {
       locId: "",
       property: {},
       room: {},
+      paymentId: "",
     }
   }
   return next();
@@ -112,8 +118,37 @@ app.use((req, res, next) => {
 
 nextApp.prepare().then(() => {
 
-  app.post('/api/authentication/login', passport.authenticate('local'), (req, res, next) => {
+  app.post('/api/authentication/login', passport.authenticate('local'), (req, res) => {
     res.end();
+  });
+
+  app.get('/api/payment/billing', async (req, res) => {
+    //Get user details
+    const {room, property, locId} = req.session.currentBooking;
+    const {_id, details} = req.user || req.session.user;
+    //Generate billing information
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: parseInt(req.session.currentBooking.room.price*100),
+      currency: "php",
+      metadata: {integration_check: 'accept_a_payment'},
+    });
+    //Validate if request is from a valid client
+    if (room._id && property._id && locId && _id && details["First Name"]) {
+      req.session.currentBooking.paymentId = paymentIntent.client_secret;
+      req.session.currentBooking[paymentIntent.client_secret] = false;
+      res.json({status: 'ok', secret: paymentIntent.client_secret, msg: ""});
+    } else {
+      res.json({status: 'err', secret: null, msg: "Invalid request. Try again."});
+    }
+  });
+
+  app.get('/api/payment/verify/:id', (req, res) => {
+    if (req.params.id===req.session.currentBooking.paymentId) {
+      req.session.currentBooking[req.session.currentBooking.paymentId] = true;
+      res.json({status: 'ok', msg: ''});
+    } else {
+      res.json({status: 'err', msg: 'Something went wrong. Contact the administrator.'});
+    }
   });
 
   app.all('*', (req, res) => {
