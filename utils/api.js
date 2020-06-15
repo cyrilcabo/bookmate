@@ -39,6 +39,10 @@ export async function apiAuthenticateUser (cookie) {
 	return await fetch(`${host}/api/authentication/authenticateuser`, {headers: {...cookie}}).then(res => res.json());
 }
 
+export async function apiViewProperty (locid, propertyid) {
+	return await fetch(`${host}/api/viewproperty/${locid}/${propertyid}`);
+}
+
 export async function apiGetSelectedRoom (cookie) {
 	return await fetch(`${host}/api/getselectedroom`, {
 		headers: {

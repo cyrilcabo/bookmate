@@ -12,7 +12,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 
-import {apiSetSelectedRoom} from '../utils/api';
+import {apiSetSelectedRoom, apiViewProperty} from '../utils/api';
 
 const useStyle = makeStyles(theme => ({
 	root: {
@@ -96,7 +96,7 @@ const PropertyView = (props) => {
 
 PropertyView.getInitialProps = async ({req, query}) => {
 	const {locid, propertyid} = query;
-	const result = await fetch(`http://localhost:3000/api/viewproperty/${locid}/${propertyid}`).then(res => res.json());
+	const result = await apiViewProperty(locid, propertyid).then(res => res.json());
 	return {property: result.property, locId: result.locId};
 }
 
