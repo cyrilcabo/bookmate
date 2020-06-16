@@ -99,8 +99,13 @@ export async function apiRegister (user) {
 	});
 }
 
-export async function apiFetchBooking (hotelId, bookingId) {
-	return await fetch(`${host}/api/fetchbooking?hotelid=${hotelId}&bookingid=${bookingId}`);
+export async function apiFetchBooking (hotelId, bookingId, cookie) {
+	return await fetch(`${host}/api/fetchbooking?hotelid=${hotelId}&bookingid=${bookingId}`, {
+		credentials: 'include',
+		headers: {
+			...cookie,
+		}
+	});
 }
 
 export async function apiChangePassword (password) {

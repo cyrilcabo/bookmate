@@ -30,9 +30,21 @@ const ViewBooking = (props) => {
 	);
 }
 
-ViewBooking.getInitialProps = async ({req, query, store}) => {
+ViewBooking.getInitialProps = async ({req, query, store, res}) => {
 	const {hotelid, bookingid} = query;
-	const bookingDetails = await apiFetchBooking(hotelid, bookingid).then(res => res.json()).then(booking => store.dispatch(viewBooking(booking)));
+	const cookie = req ?{Cookie: req.headers.cookie} :null;
+	const bookingDetails = await apiFetchBooking(hotelid, bookingid, cookie).then(res => res.json()).then(booking => {
+		if (booking.status==="err") {
+			if (req)  {
+				res.writeHead(301, {location: '/bookings'});
+				res.end();
+			} else {
+				Router.replace('/bookings');
+			}
+		} else {
+			store.dispatch(viewBooking(booking))
+		}
+	});
 }
 
 export default connect(state => ({viewBooking: state.viewBooking}))(ViewBooking);

@@ -66,6 +66,7 @@ const bookRoom = async (req, res) => {
 				$push: {
 					records: {
 						bookingId: newBookingId,
+						userId: req.user._id, 
 						room: {
 							...room,
 						},
