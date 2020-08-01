@@ -28,17 +28,34 @@ const useStyle = makeStyles(theme => ({
 		border: '5px solid #0a4f4f',
 		borderRadius: 10,
 		backgroundColor: '#f6f6f6',
-		padding: 5
+		padding: 5,
+		[theme.breakpoints.down('sm')]: {
+
+			marginBottom: 10,
+		}
 	},
 	brandDetails: {
 		'& > div': {
 			marginBottom: 10,
 		}
 	},
+	brandTitle: {
+		fontSize: '1.3rem',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.1rem',
+		}
+
+	},
 	brandLogo: {
 		justifyContent: 'flex-start',
 		[theme.breakpoints.down('sm')]: {
-			justifyContent: 'center'
+			justifyContent: 'center',
+		}
+	},
+	bookmateLogo: {
+		height: 120,
+		[theme.breakpoints.down('sm')]: {
+			height: 80,
 		}
 	},
 	rightToCenter: {
@@ -58,10 +75,17 @@ const useStyle = makeStyles(theme => ({
 	navLinks: {
 		'& > div.MuiGrid-item': {
 			marginLeft: 40,
+			fontSize: '1.2rem',
 			[theme.breakpoints.down('sm')]: {
 				margin: 0,
 				padding: 8,
+				fontSize: '1rem',
 			}
+		}
+	},
+	outLink: {
+		[theme.breakpoints.down('sm')]: {
+			height: 30,
 		}
 	}
 }))
@@ -72,7 +96,7 @@ const Footer = (props) => {
 		return (
 			<Grid item key={index}>
 				<Link href={item.link}>
-					<p style={{fontSize: '1.2rem', cursor: 'pointer'}}> {item.name} </p>
+					<p style={{cursor: 'pointer'}}> {item.name} </p>
 				</Link>
 			</Grid>
 		);
@@ -82,13 +106,13 @@ const Footer = (props) => {
 			<Grid item xs={12} md={10} container style={{margin: '50px 0px 0px 0px'}} justify="center">
 				<Grid item xs={12} md={6} container alignItems="flex-start" className={classes.brandLogo}>
 					<Grid item className={classes.iconHolder} container justify="center" alignItems="center">
-						<BookmateIcon width="100%" height="100%" />
+						<BookmateIcon className={classes.bookmateLogo} />
 					</Grid>
 				</Grid>
 				<Grid item xs={12} md={6} style={{color: '#f5f5f5'}} container direction="column" justify="space-between">
 					<Grid item container className={[classes.rightToCenter, classes.brandDetails].join(' ')} direction={"column"}>
 						<Grid item>
-							<h2 style={{margin: 0}}> &copy; Alpha Development 2020 </h2>
+							<h2 style={{margin: 0}} className={classes.brandTitle}> &copy; Alpha Development 2020 </h2>
 						</Grid>
 						<Grid item>
 							<p className={classes.contacts}> cyrilcabo@gmail.com </p>
@@ -105,17 +129,17 @@ const Footer = (props) => {
 				<Grid item xs={12} container justify="center" spacing={2}>
 					<Grid item>
 						<IconButton onClick={() => window.open("https://web.facebook.com/developmentalpha")}>
-							<img src={FacebookIcon} />
+							<img src={FacebookIcon} className={classes.outLink} />
 						</IconButton>
 					</Grid>
 					<Grid item>
 						<IconButton>
-							<img src={AlphaDevIcon} />
+							<img src={AlphaDevIcon} className={classes.outLink} />
 						</IconButton>
 					</Grid>
 					<Grid item>
 						<IconButton onClick={() => window.open("https://twitter.com/alphadev_tac")}>
-							<img src={TwitterIcon} />
+							<img src={TwitterIcon} className={classes.outLink} />
 						</IconButton>
 					</Grid>
 				</Grid>
