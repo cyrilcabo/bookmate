@@ -34,12 +34,13 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	headerImage: {
+		maxWidth: 500,
 		[theme.breakpoints.down('sm')]: {
-			width: 500,
+			width: 300,
 		},
 		[theme.breakpoints.down('xs')]: {
 			height: 150,
-			width: '100%'
+			width: '80%'
 		}
 	},
 	headerTitle: {
@@ -55,9 +56,15 @@ const useStyle = makeStyles(theme => ({
 	},
 	headerDetails: {
 		margin: 0,
-		fontSize: '1.8rem',
+		fontSize: '1.6rem',
 		[theme.breakpoints.down('md')]: {
 			fontSize: '1.5rem',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.2rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.1rem'
 		}
 	},
 	root: {

@@ -32,17 +32,30 @@ const useStyle = makeStyles(theme => ({
 	},
 	pullDown: {
 		marginTop: "auto",
+		[theme.breakpoints.up('md')]: {
+			marginTop: 10,
+		},
+		[theme.breakpoints.down('xs')]: {
+			marginTop: 15,
+		}
 	},
 	span: {
 		backgroundColor: "#f8f5a7",
 		margin: 3,
 		marginLeft: 0,
+		fontSize: '0.9rem',
 		padding: 3,
 		borderRadius: 1,
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.85rem',
+		}
 	},
 	discount: {
 		color: "red",
 		fontSize: "1.2rem",
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.05rem',
+		}
 	},
 	slashedPrice: {
 		color: "gray",
@@ -51,7 +64,86 @@ const useStyle = makeStyles(theme => ({
 	price: {
 		color: "#236a0d",
 		fontSize: "1.5rem",
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.4rem',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.3rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.2rem',
+		}
 	},
+	title: {
+		fontSize: '1.5rem', 
+		color: '#0a4f4f',
+		margin: 0,
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.4rem',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.3rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.2rem',
+		}
+	},
+	location: {
+		fontSize: '1.2rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.1rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1rem',
+		}
+	},
+	details: {
+		margin: 0, 
+		fontSize: '1.1rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '0.95rem',
+		}
+	},
+	size: { 
+		backgroundColor: 'black', 
+		color: 'white', 
+		padding: 4, 
+		fontSize: '0.9rem'
+	},
+	rating: {
+		margin: 0, 
+		fontSize: '1.2rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.1rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1rem',
+		}
+	},
+	pax: {
+		margin: 0, 
+		padding: 3, 
+		borderRadius: 1,
+		backgroundColor: '#dbf3f3', 
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.95rem',
+		}
+	},
+	status: {
+		color: "white", 
+		padding: 2, 
+		margin: '2px 0px 2px 0px', 
+		borderRadius: 1,
+	},
+	icon: {
+		height: 20,
+		[theme.breakpoints.down('sm')]: {
+			height: 18,
+		},
+	}
 }));
 
 const PropertyContainerTest = (props) => {
@@ -118,20 +210,20 @@ const PropertyContainerTest = (props) => {
 					<Grid item xs={12} sm={8} className={classes.inner}>
 						<Grid container item direction="row" xs={12}>
 							<Grid item xs={8}>
-								<h5 style={{fontSize: '1.5rem', color: '#0a4f4f', margin: 0}}>
+								<h5 className={classes.title}>
 									{props.title}
 								</h5>
 								<div>
-									<h3 style={{margin: 0}}>	
+									<h3 style={{margin: 0}} className={classes.location}>	
 										{props.location ?props.location :""}
 									</h3>
-									{props.details ?<p style={{margin: 0, fontSize: '1.1rem'}}> <i> {props.details} </i> </p> :""}
+									{props.details ?<p className={classes.details}> <i> {props.details} </i> </p> :""}
 									<Typography>
 										{amenities}
 									</Typography>
 									{props.size
 										?<p style={{margin: "5px 0px 5px 0px"}}>
-											<span style={{ backgroundColor: 'black', color: 'white', padding: 4, fontSize: '0.9rem'}}>
+											<span className={classes.size}>
 												Room size: {props.size}
 											</span>
 										</p>
@@ -142,8 +234,8 @@ const PropertyContainerTest = (props) => {
 							<Grid item container alignItems="flex-end" direction="column" xs={4}>
 								{props.rating	
 									?<Grid item container alignItems="center" justify="flex-end" style={{color: '#fdc806'}}>
-										<p style={{margin: 0, fontSize: '1.2rem'}}> {props.rating} </p> 
-										<StarIcon height={20} />  
+										<p className={classes.rating}> {props.rating} </p> 
+										<StarIcon className={classes.icon} />  
 									</Grid>
 									:""
 								}
@@ -162,7 +254,7 @@ const PropertyContainerTest = (props) => {
 									<span className={classes.price}> P{props.price.price} </span>
 								</Typography>
 								{props.pax	
-									?<p style ={{margin: 0, padding: 3, borderRadius: 1, backgroundColor: '#dbf3f3', }}> 
+									?<p className={classes.pax}> 
 										{props.pax} person{props.pax > 1 && 's'} 
 									</p>
 									:""
@@ -170,7 +262,7 @@ const PropertyContainerTest = (props) => {
 								{props.moredetails ?props.moredetails :""}
 								{props.status	
 									?<p sytle={{margin: 0}}>
-										<span style={{color: "white", padding: 2, margin: '2px 0px 2px 0px', borderRadius: 1, ...status().style}}>
+										<span style={{...status().style}} className={classes.status}>
 											{status().text}
 										</span>
 									</p>

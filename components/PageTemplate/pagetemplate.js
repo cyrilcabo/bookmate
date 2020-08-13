@@ -28,6 +28,12 @@ const useStyle = makeStyles(theme => ({
 	title: {
 		margin: 0, 
 		fontSize: '3rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '2.5rem',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '2rem',
+		},
 		[theme.breakpoints.down('xs')]: {
 			fontSize: '1.8rem'
 		}

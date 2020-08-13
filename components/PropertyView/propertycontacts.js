@@ -11,7 +11,7 @@ const useStyle = makeStyles({
 	},
 	contactTitle: {
 		margin: 0,
-		fontWeight: 600
+		fontWeight: 600,
 	}
 });
 

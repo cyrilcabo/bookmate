@@ -42,10 +42,30 @@ const useStyle = makeStyles(theme => ({
 		color: "#f50057",
 		textAlign: "center",
 		'& > h6': {
-			fontSize: '2rem',
-			marginBottom: 5,
+			fontSize: '1.8rem',
+			marginBottom: 20,
+			[theme.breakpoints.down('md')]: {
+				fontSize: '1.5rem',
+			},
+			[theme.breakpoints.down('sm')]: {
+				fontSize: '1.2rem',
+			}
 		}
 	},
+	bookingButton: {
+		backgroundColor: '#0a4f4f',
+		color: '#f4f5f5',
+		fontSize: '1.3rem',
+		padding: '5px 40px',
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.2rem',
+			padding: '5px 30px',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.1rem',
+			padding: '5px 20px',
+		}
+	}
 }));
 
 const PreviewTest = (props) => {
@@ -58,12 +78,7 @@ const PreviewTest = (props) => {
 					<React.Fragment>
 						<h6> You haven't made any bookings yet! </h6>
 						<Button 
-							style={{
-								width: '80%', 
-								backgroundColor: '#0a4f4f',
-								color: '#f4f5f5',
-								fontSize: '1.5rem'
-							}} 
+							className={classes.bookingButton}
 							onClick={() => Router.push('/top')}
 							variant="contained"
 						> Book now </Button>

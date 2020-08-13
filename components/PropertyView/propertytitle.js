@@ -21,17 +21,56 @@ const useStyle = makeStyles(theme => ({
 		minHeight: 100,
 	},
 	title: {
-		fontSize: '1.8rem',
+		fontSize: '2rem',
 		color: '#0a4f4f',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.8rem',
+		},
 		[theme.breakpoints.down('xs')]: {
 			fontSize: '1.5rem'
 		}
 	},
 	location: {
-		fontSize: '1.2rem',
+		fontSize: '1.5rem',
+		color: '#4e4e4e',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.3rem',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.1rem',
+		}
 	},
 	details: {
-		fontSize: '1rem'
+		fontSize: '1.15rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.1rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1rem',
+		}
+	},
+	rating: {
+		margin: 0, 
+		color: '#fdc806', 
+		fontSize: '1.4rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.25rem',
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.05rem',
+		}
+	},
+	icon: {
+		height: 25,
+		width: 25,
+		[theme.breakpoints.down('md')]: {
+			height: 20,
+			width: 20,
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 18,
+			width: 18,
+		}
 	}
 }));
 
@@ -79,8 +118,12 @@ const PropertyTitle = (props) => {
 				</Grid>
 				<Grid item style={{display: 'flex', flexDirection: 'column'}}>
 					<Grid item container alignItems="center">
-						<p style={{margin: 0, color: '#fdc806', fontSize: '1.5rem'}}> {props.rating} </p>
-						<StarIcon height={25} width={25} />
+						<Grid item>
+							<p className={classes.rating}> {props.rating} </p>
+						</Grid>
+						<Grid item>
+							<StarIcon className={classes.icon} />
+						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>

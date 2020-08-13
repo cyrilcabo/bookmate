@@ -26,6 +26,9 @@ const Layout = (props) => {
 				</Grid>
 			</ThemeProvider>
 		  <style global jsx>{`
+		  	  html {
+		  	  	scroll-behavior: smooth;
+		  	  }
 			  body {
 				  background-color: white;
 				  margin: 0;

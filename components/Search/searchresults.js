@@ -26,9 +26,7 @@ const useStyle = makeStyles({
 	},
 	resultItem: {
 		'&:hover' : {
-			backgroundColor: "#343a40",
-			boxShadow: "0px 0px 5px",
-			borderRadius: 5,
+			backgroundColor: "#cecece",
 		}
 	}
 });
