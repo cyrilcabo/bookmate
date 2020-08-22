@@ -70,11 +70,26 @@ const useStyle = makeStyles(theme => ({
 	contacts: {
 		fontSize: '1rem',
 		margin: 0,
+		cursor: 'pointer',
+		'&:hover': {
+			color: '#42bdbd',
+		},
+		'& a': {
+			textDecoration: 'none',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '0.95rem',
+		}
 	},
 	navLinks: {
 		'& > div.MuiGrid-item': {
 			marginLeft: 40,
 			fontSize: '1rem',
+			'& p': {
+				'&:hover': {
+					color: '#f1ea50',
+				},
+			},
 			[theme.breakpoints.down('sm')]: {
 				margin: 0,
 				padding: 8,
@@ -118,10 +133,18 @@ const Footer = (props) => {
 							<h2 style={{margin: 0}} className={classes.brandTitle}> &copy; Alpha Development 2020 </h2>
 						</Grid>
 						<Grid item>
-							<p className={classes.contacts}> cyrilcabo@gmail.com </p>
+							<p className={classes.contacts}> 
+								<a href="mailto:cyrilcabo@gmail.com">
+									cyrilcabo@gmail.com
+								</a> 
+							</p>
 						</Grid>
-						<Grid item>
-							<p className={classes.contacts}> +639398815697 </p>
+						<Grid item>	
+							<p className={classes.contacts}> 
+								<a href="tel:+639398815697">
+									+639398815697 
+								</a>
+							</p>
 						</Grid>
 					</Grid>
 					<Grid item container className={[classes.rightToCenter, classes.navLinks].join(' ')}>
