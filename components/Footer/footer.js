@@ -74,11 +74,11 @@ const useStyle = makeStyles(theme => ({
 	navLinks: {
 		'& > div.MuiGrid-item': {
 			marginLeft: 40,
-			fontSize: '1.2rem',
+			fontSize: '1rem',
 			[theme.breakpoints.down('sm')]: {
 				margin: 0,
 				padding: 8,
-				fontSize: '1rem',
+				fontSize: '0.95rem',
 			}
 		}
 	},
