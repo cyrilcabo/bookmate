@@ -76,6 +76,7 @@ const useStyle = makeStyles(theme => ({
 		},
 		'& a': {
 			textDecoration: 'none',
+			color: 'white',
 		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.95rem',
@@ -98,10 +99,7 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	outLink: {
-		height: 40,
-		[theme.breakpoints.down('md')]: {
-			height: 35,
-		},
+		height: 35,
 		[theme.breakpoints.down('sm')]: {
 			height: 30,
 		}
