@@ -71,12 +71,12 @@ const useStyle = makeStyles(theme => ({
 		fontSize: '1rem',
 		margin: 0,
 		cursor: 'pointer',
-		'&:hover': {
-			color: '#42bdbd',
-		},
 		'& a': {
 			textDecoration: 'none',
 			color: 'white',
+			'&:hover': {
+				color: '#42bdbd',
+			},
 		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '0.95rem',
