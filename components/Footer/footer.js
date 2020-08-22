@@ -17,10 +17,10 @@ import AlphaDevIcon from '../../public/Footer Icons/Alphadevelopment.png';
 
 const useStyle = makeStyles(theme => ({
 	root: {
-		minHeight: 400,
+		minHeight: 320,
 		backgroundColor: 'black',
 		marginTop: 50,
-		paddingBottom: 20,
+		paddingBottom: 10,
 	},
 	iconHolder: {
 		maxHeight: 200,
@@ -30,7 +30,6 @@ const useStyle = makeStyles(theme => ({
 		backgroundColor: '#f6f6f6',
 		padding: 5,
 		[theme.breakpoints.down('sm')]: {
-
 			marginBottom: 10,
 		}
 	},
@@ -84,6 +83,10 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	outLink: {
+		height: 40,
+		[theme.breakpoints.down('md')]: {
+			height: 35,
+		},
 		[theme.breakpoints.down('sm')]: {
 			height: 30,
 		}
@@ -134,7 +137,7 @@ const Footer = (props) => {
 					</Grid>
 					<Grid item>
 						<IconButton>
-							<img src={AlphaDevIcon} className={classes.outLink} />
+							<img src={AlphaDevIcon} className={classes.outLink} onClick={() => window.open("https://alphadevop.co")} />
 						</IconButton>
 					</Grid>
 					<Grid item>
