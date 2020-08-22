@@ -31,22 +31,19 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	location: {
-		fontSize: '1.5rem',
+		fontSize: '1.3rem',
 		color: '#4e4e4e',
 		[theme.breakpoints.down('md')]: {
-			fontSize: '1.3rem',
+			fontSize: '1.2rem',
 		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1.1rem',
 		}
 	},
 	details: {
-		fontSize: '1.15rem',
-		[theme.breakpoints.down('md')]: {
-			fontSize: '1.1rem',
-		},
+		fontSize: '1rem',
 		[theme.breakpoints.down('xs')]: {
-			fontSize: '1rem',
+			fontSize: '0.95rem',
 		}
 	},
 	rating: {
