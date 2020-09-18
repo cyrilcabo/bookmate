@@ -21,16 +21,22 @@ You can clone the repository to your local machine. Be sure that you have NodeJS
 
 ## Features
 ### Property Search
-In the Top page of the application, you can search for your favorite properties that are available in the Bookmate database. You can use the search bar to find properties in a certain location that you want to have a vacation at. To further narrow down your results, you can use the filters to find your perfect vacation home!
+In the Top page of the application, you can search for your favorite properties that are available in the Bookmate database. You can use the search bar to find properties in a certain location that you want to have a vacation at. To further narrow down your results, you can use the filters to easily find your perfect vacation home!
 
 ### Book Property
 After you have successfully picked your ideal property, you can easily book your stay. If you have an account logged in, or have made a booking previously during your browser session, the booking details would be automatically filled.
 
-### Card payment
+### Hot Properties
+An API that gives you properties with the hottest offers on different properties!
+
+### Card Payment
 With Stripe's API, you can pay your bookings in advance, and take off burden during you vacation!
 
-### User login
-By default, when you check in to the website, your activities are temporarily saved during your browser session. This allows you to see the bookings you made, and the application remembers your previous details, for a hassle free booking experience. If you have an account, however, your information is saved forever, and you only need to focus on booking your favorite properties. Furthermore, you can also edit your default details, so you won't have to change them every time you book. You will also be able to see previous bookings you have made.
+### User Login
+By default, when you check in to the website, your activities are temporarily saved during your browser session. This allows you to see the bookings you made, and the application remembers your previous details, for a hassle free booking experience. If you have an account, however, your information is saved for as long as you want, allowing you to focus on booking your favorite properties. Furthermore, you can also edit your default details, so you won't have to change them every time you book. You will also be able to see previous bookings you have made.
+
+### User Registration
+You can easily create an account to further improve your experience with Bookmate!
 
 ### Account Management
 You can edit your default booking details, change your password, or even delete your account.
