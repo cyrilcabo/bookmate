@@ -157,8 +157,8 @@ const Footer = (props) => {
 						</IconButton>
 					</Grid>
 					<Grid item>
-						<IconButton>
-							<img src={AlphaDevIcon} className={classes.outLink} onClick={() => window.open("https://alphadevop.co")} />
+						<IconButton onClick={() => window.open("https://alphadevop.co")}>
+							<img src={AlphaDevIcon} className={classes.outLink} />
 						</IconButton>
 					</Grid>
 					<Grid item>

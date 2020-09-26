@@ -25,7 +25,7 @@ const useStyle = makeStyles(theme => ({
 		marginTop: 10,
 		[theme.breakpoints.down('sm')]: {
 			marginTop: 10,
-			backgroundColor: 'white',
+			backgroundColor: 'black',
 			padding: "2px 0px 2px 0px",
 		}
 	},

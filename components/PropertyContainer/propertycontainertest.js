@@ -6,10 +6,18 @@ import {StarIcon} from '../../public/svg-icons';
 
 const useStyle = makeStyles(theme => ({
 	display: {
-		height: "100%",
 		width: "100%",
+		height: "100%",
+		[theme.breakpoints.up('md')]: {
+			minHeight: 200,
+		},
+		[theme.breakpoints.up('sm')]: {
+			maxWidth: 565,
+			minHeight: 150,
+		},
 		[theme.breakpoints.down("xs")]: {
-			maxHeight: 200,
+			maxHeight: 430,
+			minHeight: 200,
 		}
 		
 	},
@@ -204,7 +212,7 @@ const PropertyContainerTest = (props) => {
 		<React.Fragment>
 			<Card className={classes.card} elevation={4}>
 				<Grid item xs={12} container justify="center" style={{height: '100%'}}>
-					<Grid item xs={12} sm={4}>
+					<Grid item xs={12} sm={4} container justify="center">
 						<img src={props.imgSrc} className={classes.display} />
 					</Grid>
 					<Grid item xs={12} sm={8} className={classes.inner}>

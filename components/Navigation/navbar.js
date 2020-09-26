@@ -21,12 +21,18 @@ import {CheckIn} from '../../public/svg-icons';
 //Custom components
 import NavDrawer from './navdrawer';
 
-const useStyle = makeStyles({
+const useStyle = makeStyles(theme => ({
 	navLink: {
 		color: "#f4f5f5",
 		fontSize: 17,
 		margin: '0px 15px 0px 0px',
 		cursor: 'pointer',
+		'&:hover': {
+			color: '#f1ea50',
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: 15,
+		}
 	},
 	appLogo: {
 		backgroundColor: 'black',
@@ -35,8 +41,26 @@ const useStyle = makeStyles({
 	appTitle: {
 		flex: 1,
 		fontSize: 20,
+		[theme.breakpoints.down('sm')]: {
+			fontSize: 18,
+		},
+		[theme.breakpoints.down('xs')]: {
+			margin: '0px 0px',
+		}
 	},
-});
+	toolbar: {
+		[theme.breakpoints.down('xs')]: {
+			minHeight: 60,
+		}
+	},
+	toolbarContainer: {
+		display: 'flex', 
+		alignItems: 'center',
+		[theme.breakpoints.down('xs')]: {
+			padding: 0,
+		}
+	}
+}));
 
 const NavBar = (props) => {
 	const classes = useStyle();
@@ -55,8 +79,8 @@ const NavBar = (props) => {
 	return (
 		<div style={{marginBottom: 20}}>
 			<AppBar style={{backgroundColor: '#0a4f4f'}} position="absolute">
-				<Toolbar>
-					<Container style={{display: 'flex', alignItems: 'center'}}>
+				<Toolbar className={classes.toolbar}>
+					<Container className={classes.toolbarContainer}>
 						<Hidden smUp>
 							<IconButton onClick={drawerToggle} >
 								<MenuIcon style={{color: "white"}} />
@@ -77,7 +101,7 @@ const NavBar = (props) => {
 				</Toolbar>
 			</AppBar>
 			<NavDrawer nav={props.navs} toggle={toggle} drawerToggle={drawerToggle}/>
-			<Toolbar />
+			<Toolbar className={classes.toolbar}/>
 		</div>
 	);
 };

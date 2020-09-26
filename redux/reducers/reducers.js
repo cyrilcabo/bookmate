@@ -81,7 +81,10 @@ function searchReducer (state = initialState.search, action) {
 function userReducer (state = initialState.user, action) {
 	switch (action.type) {
 		case "FETCH_USER":
-			return action.payload;
+			return {
+				...state,
+				...action.payload,
+			};
 		case "SET_CURRENT_BOOKING": {
 			return {
 				...state,

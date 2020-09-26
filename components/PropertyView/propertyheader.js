@@ -7,20 +7,26 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyle = makeStyles(theme => ({
 	root: {
-		width: '100%',
-		height: 200,
 		overflow: 'hidden',
 		display: 'flex',
 		flexWrap: 'wrap',
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		[theme.breakpoints.up('md')]: {
-			height: 280,
-		},
 	},
 	gridList: {
 		height: '100%',
 		flexWrap: 'nowrap',	
+	},
+	img: {
+		minHeight: 220,
+		maxHeight: 310,
+		[theme.breakpoints.down('sm')]: {
+			minHeight: 150,
+			maxHeight: 250,
+		}
+	},
+	tile: {
+		maxWidth: '100%',
 	},
 }));
 
@@ -37,14 +43,14 @@ const PropertyHeader = (props) => {
 	}
 	
 	const images = imgSrcs.map((tile, index) => {
-		return <GridListTile key={index} style={{height: '100%'}}>
-			<img src={tile.imgSrc} alt={tile.title} />
+		return <GridListTile key={index} style={{width: 'inherit', height: '100%'}} className={classes.tile}>
+				<img src={tile.imgSrc} alt={tile.title} className={classes.img} />
 			<GridListTileBar title={tile.title} />
 		</GridListTile>
 	});
 	return (
 		<div className={classes.root}>	
-			<GridList className={classes.gridList} cols={2} onScroll={hasMore ?updateNext :null}>
+			<GridList className={classes.gridList} onScroll={hasMore ?updateNext :null}>
 				{images}
 			</GridList>
 		</div>
