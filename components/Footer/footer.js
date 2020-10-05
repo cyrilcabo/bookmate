@@ -103,6 +103,9 @@ const useStyle = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			height: 30,
 		}
+	},
+	isHome: {
+		marginTop: 0,
 	}
 }))
 
@@ -118,7 +121,7 @@ const Footer = (props) => {
 		);
 	});
 	return (
-		<Grid item xs={12} className={classes.root} container justify="center">
+		<Grid item xs={12} className={[classes.root, props.isHome ?classes.isHome :""].join(' ')} container justify="center">
 			<Grid item xs={12} md={10} container style={{margin: '50px 0px 0px 0px'}} justify="center">
 				<Grid item xs={12} md={6} container alignItems="flex-start" className={classes.brandLogo}>
 					<Grid item className={classes.iconHolder} container justify="center" alignItems="center">

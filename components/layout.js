@@ -22,7 +22,7 @@ const Layout = (props) => {
 			<ThemeProvider theme={theme}>
 				<Grid item xs={12}>
 					{props.children}
-					<Footer navs={navs}/>
+					<Footer navs={navs} isHome={props.isHome} />
 				</Grid>
 			</ThemeProvider>
 		  <style global jsx>{`

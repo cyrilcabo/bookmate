@@ -29,12 +29,13 @@ const useStyle = makeStyles(theme => ({
 		minHeight: 552,
 		backgroundColor: '#f5ffff',
 		textAlign: 'center',
+		boxShadow: '0px 0px 3px #ababab',
 		[theme.breakpoints.down('sm')]: {
 			padding: '80px 0px 50px 0px'
 		}
 	},
 	third: {
-		minHeight: 401,
+		minHeight: 370,
 		textAlign: 'center'
 	},
 	bgdesign: {
