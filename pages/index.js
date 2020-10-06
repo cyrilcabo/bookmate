@@ -128,6 +128,7 @@ const useStyle = makeStyles(theme => ({
 	},
 	perkTitle: {
 		fontSize: '1.5rem',
+		color: '#97a900',
 		margin: '15px 0px 0px 0px',
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1.4rem',
@@ -135,7 +136,7 @@ const useStyle = makeStyles(theme => ({
 	},
 	perkDetails: {
 		fontSize: '1rem',
-		margin: '15px 0px 0px 0px',
+		margin: '5px 0px 0px 0px',
 		[theme.breakpoints.down('sm')]: {
 			marginBottom: 20,
 		}
