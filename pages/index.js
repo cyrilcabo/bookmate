@@ -140,6 +140,9 @@ const useStyle = makeStyles(theme => ({
 			marginBottom: 20,
 		}
 	},
+	thirdTitle: {
+		color: '#124f4f',
+	},
 	BTNsignup: {
 		fontSize: '1.3rem',
 		backgroundColor: '#f1ea50',
@@ -224,7 +227,7 @@ const Index = () => {
 			<Grid item xs={12} className={classes.third} container alignItems="center" justify="center">
 				<Grid item xs={11} sm={10} md={8} container direction="column" alignItems="center">
 					<Grid item>
-						<h2 className={classes.secondTitle}> Be part of Bookmate </h2>
+						<h2 className={[classes.secondTitle, classes.thirdTitle].join(' ')}> Be part of Bookmate </h2>
 					</Grid>
 					<Grid item>
 						<p className={classes.secondSubtitle}>
