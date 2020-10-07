@@ -24,7 +24,14 @@ import {connect} from 'react-redux';
 import Router from 'next/router';
 
 //Redux actions
-import {fetchProperties, setSearchFilters, searchRandomProperty, fetchFilters} from '../redux/actions/actions';
+import {
+	fetchProperties, 
+	setSearchFilters,
+	setSearchBookDate, 
+	searchRandomProperty, 
+	fetchFilters,
+	setSearchId
+} from '../redux/actions/actions';
 
 //API calls
 import {apiSetDate} from '../utils/api';
@@ -111,35 +118,30 @@ const useStyle = makeStyles(theme => ({
 
 const Top = (props) => {
 	const classes = useStyle();
-	const [date, setDate] = React.useState({start: props.search.bookDate.start, end: props.search.bookDate.end});
-	const [currentLocation, setCurrentLocation] = React.useState(props.search.id);
-	const filters = props.filters;
+	const {filters, search, properties} = props;
 	const [filtered, handleFilter] = React.useState(props.search.filters);
-	const [search, setSearch] = React.useState({id: currentLocation, filters: props.search.filters});
-	
+
 	const setFilter = (e) => handleFilter([...filtered, e]);
 	const unsetFilter = (e) => handleFilter(filtered.filter(i => i!=e));
 	const handleBook = async (locid, id) => {
-		await apiSetDate(date.start, date.end);
+		await apiSetDate(search.bookDate.start, search.bookDate.end);
 		Router.push(`/property?locid=${locid}&propertyid=${id}`);
 	};
 	
 	const handleLocation = async (id) => {
 		await props.fetchProperties(id, filtered, 0);
-		setSearch({id: id, filters: filtered});
+		props.setSearchId(id);
+		props.setSearchFilters(filtered);
 	}
 	
 	const handleSearch = async () => {
 		await props.fetchProperties(search.id, filtered, 0);
-		setSearch({...search, filters: filtered});
 		props.setSearchFilters(filtered);
 	}
 	
-	const fetchNext = async () => {
-		await props.fetchProperties(search.id, filtered, props.properties[search.id].index+10);
-	}
+	const fetchNext = async () => await props.fetchProperties(search.id, search.filters, properties[search.id].index+10);
 	
-	const results = props.properties[search.id].properties.map((item, index) => {
+	const results = properties[search.id].properties.map((item, index) => {
 		return <PropertyContainerTest
 			price={item.price} 
 			rating={item.ratings}
@@ -149,7 +151,7 @@ const Top = (props) => {
 			title={item.title}
 			details={item.details}
 			moredetails={item.moredetails}
-			handleBook={handleBook.bind(this, props.properties[search.id]._id, item._id)}
+			handleBook={handleBook.bind(this, properties[search.id]._id, item._id)}
 			key={index}
 		/>
 	})
@@ -179,8 +181,8 @@ const Top = (props) => {
 					<Grid item container xs={12} md={3} className={classes.searchOptions}>
 						<Paper>
 							<DatePicker 
-								setDate={setDate}
-								date={date}
+								setDate={props.setSearchBookDate}
+								date={search.bookDate}
 								width={{xs:12}}
 							/>
 							<Hidden smDown>
@@ -200,9 +202,9 @@ const Top = (props) => {
 					</Grid>
 					<Grid item xs={12} md={9} style={{boxShadow: '0px 1px 4px black', backgroundColor: 'white', borderRadius: 2}}>
 						<InfiniteScroll
-							dataLength={props.properties[search.id].properties.length}
+							dataLength={properties[search.id].properties.length}
 							next={fetchNext}
-							hasMore={props.properties[search.id].hasMore}
+							hasMore={properties[search.id].hasMore}
 							loader={<h4 style={{textAlign: "center"}}> Loading more items... </h4>}
 							endMessage={""}
 							style={{
@@ -211,7 +213,7 @@ const Top = (props) => {
 						>
 							<PreviewTest 
 								filter={search.filters} 
-								location={props.properties[search.id].location}
+								location={properties[search.id].location}
 							>
 									{results}
 							</PreviewTest>
@@ -239,7 +241,9 @@ Top.getInitialProps = async ({store, req, isLogged}) => {
 
 const mapDispatchToProps = {
 	fetchProperties,
-	setSearchFilters
+	setSearchFilters,
+	setSearchId,
+	setSearchBookDate
 }
 
 export default connect(state => ({properties: state.properties, search: state.search, filters: state.filters}), mapDispatchToProps)(Top);
