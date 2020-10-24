@@ -1,7 +1,7 @@
 # Bookmate
 
 ## Introduction
-Bookmate is web-based hotel-booking application. It is a full-stack application, where you can find your favorite properties, get hot offers, and book the most comfortable room!
+Bookmate is a web-based hotel-booking application. It is a full-stack application, where you can find your favorite properties, get hot offers, and book the most comfortable room!
 ### Demo
 Bookmate is live at: https://bookmate.herokuapp.com . Check it out, and don't forget to follow me for more projects like this.
 
