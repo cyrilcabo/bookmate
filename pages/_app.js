@@ -7,6 +7,8 @@ import {setUser} from '../redux/actions/actions';
 
 import Layout from '../components/layout';
 
+import '../src/styles/index.css';
+
 import {apiAuthenticateUser} from '../utils/api';
 import ScrollToTop from '../utils/scrolltotop';
 
