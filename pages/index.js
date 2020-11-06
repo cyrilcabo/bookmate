@@ -29,17 +29,16 @@ const useStyle = makeStyles(theme => ({
 	first: {
 		minHeight: 578,
 		position: 'relative',
+		backgroundColor: '#ecf7fe',
 		[theme.breakpoints.down('sm')]: {
 			padding: '50px 0px 50px 0px'
 		}
 	},
 	second: {
-		minHeight: 552,
-		backgroundColor: '#f5ffff',
+		minHeight: 532,
+		backgroundColor: '#ffffff',
 		zIndex: 2,
 		position: 'relative',
-		textAlign: 'center',
-		boxShadow: '0px 2px 4px #313131',
 		[theme.breakpoints.down('sm')]: {
 			padding: '80px 0px 50px 0px'
 		}
@@ -53,22 +52,31 @@ const useStyle = makeStyles(theme => ({
 		height: '100%',
 		right: 0,
 		top: 0,
-		zIndex: -1,
+		zIndex: 0,
 		[theme.breakpoints.down('sm')]: {
 			width: '50%',
 		}
 	},
+	firstContainer: {
+		[theme.breakpoints.down('sm')]: {
+			flexDirection: 'column',
+			alignItems: 'center'
+		}
+	},
 	welcomeContainer: {
+		zIndex: 1,
+		width: 400,
+		[theme.breakpoints.down('md')]: {
+			width: 320,
+		},
 		[theme.breakpoints.down('sm')]: {
 			justifyContent: 'center',
 			alignItems: 'center',
 			marginBottom: 50,
+			width: '100%',
 		}
 	},
 	welcomeImage: {
-		[theme.breakpoints.down('md')]: {
-			height: 250,
-		},
 		[theme.breakpoints.down('sm')]: {
 			height: 200,
 		},
@@ -77,6 +85,10 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	headerContainer: {
+		flex: 1,
+		zIndex: 1,
+		display: 'flex',
+		flexDirection: 'column',
 		[theme.breakpoints.down('sm')]: {
 			alignItems: 'center',
 			textAlign: 'center',
@@ -127,35 +139,61 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	secondTitle: {
-		fontSize: '2.5rem',
+		fontSize: '3rem',
 		margin: '0px 0px 20px 0px',
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1.8rem',
 		}
 	},
+	secondContainer: {
+		width: '70%',
+		margin: '80px 0px 70px 0px',
+		[theme.breakpoints.down('md')]: {
+			width: '80%',
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: '100%'
+		}
+	},
 	secondSubtitle: {
-		fontSize: '1.2rem',
-		margin: '0px 0px 50px 0px',
+		fontSize: '1.4rem',
+		margin: 0,
 		lineHeight: '30px',
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1rem',
 		}
 	},
+	perk: {
+		width: '30%',
+	},
+	perkImgContainer: {
+		width: 100,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	perkContainer: {
+		flex: 1,
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+	},
 	perkImg: {
+		height: 80,
 		[theme.breakpoints.down('sm')]: {
 			height: 80,
 		}
 	},
 	perkTitle: {
-		fontSize: '1.5rem',
-		color: '#97a900',
-		margin: '15px 0px 0px 0px',
+		fontSize: '1.6rem',
+		color: '#124f4f',
+		margin: 0,
 		[theme.breakpoints.down('sm')]: {
-			fontSize: '1.4rem',
+			fontSize: '1.2rem',
 		}
 	},
 	perkDetails: {
-		fontSize: '1rem',
+		fontSize: '1.2rem',
 		margin: '5px 0px 0px 0px',
 		[theme.breakpoints.down('sm')]: {
 			marginBottom: 20,
@@ -293,15 +331,17 @@ const Index = (props) => {
 		}
 	];
 	const mappedPerks = perks.map((item, index) => {
-		return <Grid item key={index} xs={11} md={3} container direction="column" alignItems="center">
-			<Grid item>
+		return <Grid item key={index} container alignItems="center" className={classes.perk}>
+			<Grid item className={classes.perkImgContainer}>
 				{item.img}
 			</Grid>
-			<Grid item>
-				<h3 className={classes.perkTitle}> {item.title} </h3>
-			</Grid>
-			<Grid item>
-				<p className={classes.perkDetails}> {item.details} </p>
+			<Grid item className={classes.perkContainer}>
+				<Grid item>
+					<h3 className={classes.perkTitle}> {item.title} </h3>
+				</Grid>
+				<Grid item>
+					<p className={classes.perkDetails}> {item.details} </p>
+				</Grid>
 			</Grid>
 		</Grid>
 	});
@@ -309,11 +349,11 @@ const Index = (props) => {
 		<Grid item xs={12} style={{marginTop: -20}}>
 			<Grid item xs={12} className={classes.first} container alignItems="center" justify="center">
 				<BGDesign className={classes.bgdesign} />
-				<Grid item xs={11} container direction="row-reverse" justify="space-between" alignItems="center">
-					<Grid item container xs={12} md={6} container justify="flex-end" alignItems="flex-end" className={classes.welcomeContainer}>
-						<WelcomeImage className={classes.welcomeImage} viewBox="0 0 377.983 321.102"/>
+				<Grid item xs={11} md={10} container direction="row-reverse" justify="space-between" alignItems="center" className={classes.firstContainer}>
+					<Grid item className={classes.welcomeContainer}>
+						<WelcomeImage className={classes.welcomeImage} viewBox="0 0 377.983 321.102" height="" width=""/>
 					</Grid>
-					<Grid item container xs={12} md={6} direction="column" className={classes.headerContainer} justify="center">
+					<Grid item className={classes.headerContainer}>
 						<Grid item>
 							<h1 className={classes.headerTitle}> Looking for a good offer on your favorites? </h1>
 						</Grid>
@@ -326,19 +366,19 @@ const Index = (props) => {
 					</Grid>
 				</Grid>
 			</Grid>
-			<Grid item xs={12} className={classes.second} container alignItems="center" justify="center">
-				<Grid item xs={12} container alignItems="center" justify="center">	
-					<Grid item container xs={11} justify="center" alignItems="center" direction="column">
+			<Grid item xs={12} className={classes.second} container justify="center">
+				<Grid item xs={11} md={10} container direction="column">	
+					<Grid item container justify="center" alignItems="flex-start" direction="column" className={classes.secondContainer}>
 						<Grid item>
 							<h2 className={classes.secondTitle}> What is <span style={{color: '#124f4f'}}>Bookmate</span>? </h2>
 						</Grid>
-						<Grid item xs={11} md={10}>
+						<Grid item>
 							<p className={classes.secondSubtitle}>
 								Bookmate is a web-based booking application, designed to prioritize speed and convenience. Through Bookmate, you can easily find your favorite properties, and easily book a stay at just a single tap of your fingers!
 							</p>
 						</Grid>
 					</Grid>
-					<Grid item md={10} container justify="space-around">
+					<Grid item container justify="space-around">
 						{mappedPerks}
 					</Grid>
 				</Grid>
