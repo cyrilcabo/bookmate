@@ -17,19 +17,25 @@ import AlphaDevIcon from '../../public/Footer Icons/Alphadevelopment.png';
 
 const useStyle = makeStyles(theme => ({
 	root: {
-		minHeight: 320,
-		backgroundColor: 'black',
+		minHeight: 200,
+		backgroundColor: '#070f10',
 		marginTop: 50,
-		paddingBottom: 10,
+		padding: '25px 0px',
+		[theme.breakpoints.down('sm')]: {
+			padding:'30px 0px',
+		}
+	},
+	container: {
 	},
 	iconHolder: {
-		maxHeight: 200,
-		maxWidth: 300,
+		height: 100,
+		width: 220,
 		border: '5px solid #0a4f4f',
 		borderRadius: 10,
 		backgroundColor: '#f6f6f6',
 		padding: 5,
 		[theme.breakpoints.down('sm')]: {
+			alignSelf: 'center',
 			marginBottom: 10,
 		}
 	},
@@ -52,10 +58,7 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	bookmateLogo: {
-		height: 120,
-		[theme.breakpoints.down('sm')]: {
-			height: 80,
-		}
+		height: '100%',
 	},
 	rightToCenter: {
 		textAlign: 'right',
@@ -98,10 +101,15 @@ const useStyle = makeStyles(theme => ({
 			}
 		}
 	},
-	outLink: {
-		height: 35,
+	outLinkContainer: {
 		[theme.breakpoints.down('sm')]: {
-			height: 30,
+			justifyContent: 'center'
+		}
+	},
+	outLink: {
+		height: 25,
+		[theme.breakpoints.down('sm')]: {
+			height: 23,
 		}
 	},
 	isHome: {
@@ -121,14 +129,31 @@ const Footer = (props) => {
 		);
 	});
 	return (
-		<Grid item xs={12} className={[classes.root, props.isHome ?classes.isHome :""].join(' ')} container justify="center">
-			<Grid item xs={12} md={10} container style={{margin: '50px 0px 0px 0px'}} justify="center">
-				<Grid item xs={12} md={6} container alignItems="flex-start" className={classes.brandLogo}>
+		<Grid item xs={12} className={[classes.root, props.isHome ?classes.isHome :""].join(' ')} container justify="center" alignItems="center">
+			<Grid item xs={12} md={10} container className={classes.container} justify="center">
+				<Grid item xs={12} md={5} lg={6} container direction="column" justify="space-between" className={classes.brandLogo}>
 					<Grid item className={classes.iconHolder} container justify="center" alignItems="center">
 						<BookmateIcon className={classes.bookmateLogo} />
 					</Grid>
+					<Grid item container className={classes.outLinkContainer} justify="flex-start" spacing={1}>
+						<Grid item>
+							<IconButton onClick={() => window.open("https://web.facebook.com/developmentalpha")}>
+								<img src={FacebookIcon} className={classes.outLink} />
+							</IconButton>
+						</Grid>
+						<Grid item>
+							<IconButton onClick={() => window.open("https://alphadevop.co")}>
+								<img src={AlphaDevIcon} className={classes.outLink} />
+							</IconButton>
+						</Grid>
+						<Grid item>
+							<IconButton onClick={() => window.open("https://twitter.com/alphadev_tac")}>
+								<img src={TwitterIcon} className={classes.outLink} />
+							</IconButton>
+						</Grid>
+					</Grid>
 				</Grid>
-				<Grid item xs={12} md={6} style={{color: '#f5f5f5'}} container direction="column" justify="space-between">
+				<Grid item xs={12} md={7} lg={6} style={{color: '#f5f5f5'}} container direction="column" justify="space-between">
 					<Grid item container className={[classes.rightToCenter, classes.brandDetails].join(' ')} direction={"column"}>
 						<Grid item>
 							<h2 style={{margin: 0}} className={classes.brandTitle}> &copy; Alpha Development 2020 </h2>
@@ -152,6 +177,15 @@ const Footer = (props) => {
 						{navLinks}
 					</Grid>
 				</Grid>
+			</Grid>
+		</Grid>
+	);
+}
+
+export default Footer;
+
+
+/*
 				<Divider style={{backgroundColor: '#dceb5c', width: '80%', height: 5}}/>
 				<Grid item xs={12} container justify="center" spacing={2}>
 					<Grid item>
@@ -169,10 +203,4 @@ const Footer = (props) => {
 							<img src={TwitterIcon} className={classes.outLink} />
 						</IconButton>
 					</Grid>
-				</Grid>
-			</Grid>
-		</Grid>
-	);
-}
-
-export default Footer;
+				</Grid>*/
