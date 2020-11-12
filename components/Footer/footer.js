@@ -183,24 +183,3 @@ const Footer = (props) => {
 }
 
 export default Footer;
-
-
-/*
-				<Divider style={{backgroundColor: '#dceb5c', width: '80%', height: 5}}/>
-				<Grid item xs={12} container justify="center" spacing={2}>
-					<Grid item>
-						<IconButton onClick={() => window.open("https://web.facebook.com/developmentalpha")}>
-							<img src={FacebookIcon} className={classes.outLink} />
-						</IconButton>
-					</Grid>
-					<Grid item>
-						<IconButton onClick={() => window.open("https://alphadevop.co")}>
-							<img src={AlphaDevIcon} className={classes.outLink} />
-						</IconButton>
-					</Grid>
-					<Grid item>
-						<IconButton onClick={() => window.open("https://twitter.com/alphadev_tac")}>
-							<img src={TwitterIcon} className={classes.outLink} />
-						</IconButton>
-					</Grid>
-				</Grid>*/
