@@ -9,6 +9,7 @@ import WelcomeImage from '../public/SVG/Welcome image.svg';
 import CheapIcon from '../public/SVG/Cheap Icon.svg';
 import BedIcon from '../public/SVG/Bed Icon.svg';
 import SpeedIcon from '../public/SVG/Speed Icon.svg';
+import LowerDesign from '../public/SVG/Lower Design.svg';
 
 //Custom components
 import LocationSearch from '../components/Search/locationsearch';
@@ -41,11 +42,16 @@ const useStyle = makeStyles(theme => ({
 		position: 'relative',
 		[theme.breakpoints.down('sm')]: {
 			padding: '80px 0px 50px 0px'
+		},
+		[theme.breakpoints.down('xs')]: {
+			padding: '70px 0px 50px 0px'
 		}
 	},
 	third: {
-		minHeight: 370,
+		minHeight: 400,
 		textAlign: 'center',
+		position: 'relative',
+		zIndex: 1,
 	},
 	bgdesign: {
 		position: 'absolute',
@@ -138,13 +144,6 @@ const useStyle = makeStyles(theme => ({
 			fontSize: '1.1rem',
 		}
 	},
-	secondTitle: {
-		fontSize: '3rem',
-		margin: '0px 0px 20px 0px',
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '1.8rem',
-		}
-	},
 	secondContainer: {
 		width: '70%',
 		margin: '80px 0px 70px 0px',
@@ -152,42 +151,101 @@ const useStyle = makeStyles(theme => ({
 			width: '80%',
 		},
 		[theme.breakpoints.down('sm')]: {
-			width: '100%'
+			width: '90%',
+			margin: '0px 0px 60px 0px'
+		},
+		[theme.breakpoints.down('xs')]: {
+			alignItems: 'center',
+			textAlign: 'center',
+			width: '100%',
+			marginBottom: 50
+		}
+	},
+	secondTitle: {
+		fontSize: '2.8rem',
+		margin: '0px 0px 20px 0px',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '2.5rem'
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '2.2rem',
+			marginBottom: 15,
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.8rem'
 		}
 	},
 	secondSubtitle: {
-		fontSize: '1.4rem',
+		fontSize: '1.3rem',
 		margin: 0,
 		lineHeight: '30px',
+		[theme.breakpoints.down('md')]: {
+			lineHeight: '28px',
+		},
 		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.2rem',
+			lineHeight: '26px'
+		},
+		[theme.breakpoints.down('xs')]: {
 			fontSize: '1rem',
+			lineHeight: '25px'
 		}
 	},
 	perk: {
 		width: '30%',
+		[theme.breakpoints.down('sm')]: {
+			width: '25%'
+		},
+		[theme.breakpoints.down('xs')]: {
+			width: '80%',
+			justifyContent: 'center',
+			marginBottom: 15,
+		}
 	},
 	perkImgContainer: {
 		width: 100,
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			marginBottom: 15,
+		},
+		[theme.breakpoints.down('xs')]: {
+			width: '90%',
+		}
 	},
 	perkContainer: {
 		flex: 1,
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
+		[theme.breakpoints.down('sm')]: {
+			flex: 'unset',
+			width: '80%',
+			alignItems: 'center',
+			textAlign: 'center'
+		}
 	},
 	perkImg: {
 		height: 80,
+		[theme.breakpoints.down('md')]: {
+			height: 70,
+		},
 		[theme.breakpoints.down('sm')]: {
 			height: 80,
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 60
 		}
 	},
 	perkTitle: {
 		fontSize: '1.6rem',
 		color: '#124f4f',
 		margin: 0,
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.4rem',
+		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '1.2rem',
 		}
@@ -195,12 +253,36 @@ const useStyle = makeStyles(theme => ({
 	perkDetails: {
 		fontSize: '1.2rem',
 		margin: '5px 0px 0px 0px',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.1rem',
+		},
 		[theme.breakpoints.down('sm')]: {
 			marginBottom: 20,
+			fontSize: '1rem'
 		}
 	},
 	thirdTitle: {
 		color: '#124f4f',
+		fontSize: '2.5rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '2.2rem'
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.9rem'
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.6rem'
+		}
+	},
+	thirdSubtitle: {
+		marginBottom: 40,
+		fontSize: '1.2rem',
+		[theme.breakpoints.down('md')]: {
+			fontSize: '1.1rem'
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1rem'
+		}
 	},
 	BTNsignup: {
 		fontSize: '1.3rem',
@@ -220,8 +302,16 @@ const useStyle = makeStyles(theme => ({
 	inserted: {
 		position: 'relative',
 		minHeight: 415,
+		zIndex: 1,
+		//backgroundImage: 'linear-gradient(to bottom left, #124f4f, 60%, transparent)',
+	},
+	insertedRootBg: {
+		position: 'absolute',
 		zIndex: 0,
-		backgroundImage: 'linear-gradient(to bottom left, #124f4f, 60%, transparent)',
+		height: '100%',
+		width: '100%',
+		backgroundColor: '#313131',
+		opacity: '0.1'
 	},
 	insertedTitle: {
 		marginTop: 55,
@@ -259,7 +349,7 @@ const useStyle = makeStyles(theme => ({
 		width: '80%',
 		height: '82%',
 		backgroundColor: '#f9f9f9',
-		opacity: '0.8',
+		opacity: '0.95',
 		top: '9%',
 		bottom: '9%',
 		zIndex: 0,
@@ -293,6 +383,23 @@ const useStyle = makeStyles(theme => ({
 		[theme.breakpoints.down('xs')]: {
 			width: '95%'
 		}
+	},
+	combinedContainer: {
+		height: 'min-content',
+		position: 'relative'
+	},
+	combinedDesign: {
+		position: 'absolute',
+		zIndex: 0,
+		height: '100%',
+		right: 0,
+		[theme.breakpoints.down('sm')]: {
+			width: '60%'
+		},
+		[theme.breakpoints.down('xs')]: {
+			width: '70%',
+			display: 'none'
+		}
 	}
 }));
 
@@ -317,7 +424,7 @@ const Index = (props) => {
 		{
 			img: <BedIcon className={classes.perkImg} viewBox="0 0 105.273 100" />,
 			title: "Comfortable",
-			details: "Bookmate offers the cheapest prices on your favorite proeprties!",
+			details: "Bookmate offers the cheapest prices on your favorite properties!",
 		},
 		{
 			img: <CheapIcon className={classes.perkImg} viewBox="0 0 60.606 100" />,
@@ -383,62 +490,66 @@ const Index = (props) => {
 					</Grid>
 				</Grid>
 			</Grid>
-			<Grid item className={classes.inserted} container justify={"center"}>
-				<Grid item container xs={11} md={10} direction="column" alignItems="center" className={classes.insertedContainer}>
-					<div className={classes.insertedBg} />
-					<Grid item className={classes.insertedTitle}>
-						<h2> Find your favorite property! </h2>
-					</Grid>
-					<Grid item className={classes.datePickerContainer}>
-						<DatePicker 
-							isDefault
-							date={props.search.bookDate} 
-							setDate={props.setSearchBookDate} 
-							width={{xs: 12, md: 5}}
-						/>
-					</Grid>
-					<Grid item className={classes.locationSearchContainer}>
-						<LocationSearch
-							filters={props.filters}
-							setFilter={setFilter}
-							unsetFilter={unsetFilter}
-							filtered={filtered}
-							handleLocation={handleLocation}
-							setSearch={handleSearch}
-						/>
-					</Grid>
-					<Grid item className={classes.filterContainer}>
-						<Hidden smDown>
-							<Filter
+			<div className={classes.combinedContainer}>
+				<LowerDesign className={classes.combinedDesign} /> 
+				<Grid item className={classes.inserted} container justify={"center"}>
+					<div className={classes.insertedRootBg} />
+					<Grid item container xs={11} md={10} direction="column" alignItems="center" className={classes.insertedContainer}>
+						<div className={classes.insertedBg} />
+						<Grid item className={classes.insertedTitle}>
+							<h2> Find your favorite property! </h2>
+						</Grid>
+						<Grid item className={classes.datePickerContainer}>
+							<DatePicker 
+								isDefault
+								date={props.search.bookDate} 
+								setDate={props.setSearchBookDate} 
+								width={{xs: 12, md: 5}}
+							/>
+						</Grid>
+						<Grid item className={classes.locationSearchContainer}>
+							<LocationSearch
 								filters={props.filters}
 								setFilter={setFilter}
 								unsetFilter={unsetFilter}
 								filtered={filtered}
 								handleLocation={handleLocation}
 								setSearch={handleSearch}
-								style={{
-									color: '#313131'
-								}}
 							/>
-						</Hidden>
+						</Grid>
+						<Grid item className={classes.filterContainer}>
+							<Hidden smDown>
+								<Filter
+									filters={props.filters}
+									setFilter={setFilter}
+									unsetFilter={unsetFilter}
+									filtered={filtered}
+									handleLocation={handleLocation}
+									setSearch={handleSearch}
+									style={{
+										color: '#313131'
+									}}
+								/>
+							</Hidden>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Grid>
-			<Grid item xs={12} className={classes.third} container alignItems="center" justify="center">
-				<Grid item xs={11} sm={10} md={8} container direction="column" alignItems="center">
-					<Grid item>
-						<h2 className={[classes.secondTitle, classes.thirdTitle].join(' ')}> Be part of Bookmate </h2>
-					</Grid>
-					<Grid item>
-						<p className={classes.secondSubtitle}>
-							Join the growing community of Bookmate to enjoy the hottest offers available, and easily book on your favorite properties with just a few clicks!
-						</p>
-					</Grid>
-					<Grid item>
-						<Button className={[classes.BTNsignup, classes.pillBtn].join(' ')} onClick={() => Router.push('/register')}> Register </Button>
+				<Grid item xs={12} className={classes.third} container alignItems="center" justify="center">
+					<Grid item xs={11} sm={10} md={8} container direction="column" alignItems="center">
+						<Grid item>
+							<h2 className={[classes.secondTitle, classes.thirdTitle].join(' ')}> Be part of Bookmate </h2>
+						</Grid>
+						<Grid item>
+							<p className={[classes.secondSubtitle, classes.thirdSubtitle].join(' ')}>
+								Join the growing community of Bookmate to enjoy the hottest offers available, and easily book on your favorite properties with just a few clicks!
+							</p>
+						</Grid>
+						<Grid item>
+							<Button className={[classes.BTNsignup, classes.pillBtn].join(' ')} onClick={() => Router.push('/register')}> Register </Button>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Grid>
+			</div>
 		</Grid>
 	);
 }
