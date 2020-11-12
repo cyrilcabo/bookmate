@@ -458,7 +458,7 @@ const Index = (props) => {
 				<BGDesign className={classes.bgdesign} />
 				<Grid item xs={11} md={10} container direction="row-reverse" justify="space-between" alignItems="center" className={classes.firstContainer}>
 					<Grid item className={classes.welcomeContainer}>
-						<WelcomeImage className={classes.welcomeImage} viewBox="0 0 377.983 321.102" height="" width=""/>
+						<WelcomeImage className={classes.welcomeImage} viewBox="0 0 377.983 321.102"/>
 					</Grid>
 					<Grid item className={classes.headerContainer}>
 						<Grid item>
