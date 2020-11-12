@@ -107,9 +107,9 @@ const useStyle = makeStyles(theme => ({
 	},
 	details: {
 		margin: 0, 
-		fontSize: '1.1rem',
+		fontSize: '1rem',
 		[theme.breakpoints.down('md')]: {
-			fontSize: '1rem',
+			fontSize: '0.98rem',
 		},
 		[theme.breakpoints.down('xs')]: {
 			fontSize: '0.95rem',
