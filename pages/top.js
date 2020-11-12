@@ -80,8 +80,11 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	headerTitle: {
-		fontSize: '4rem',
+		fontSize: '3.5rem',
 		margin: 0,
+		[theme.breakpoints.down('md')]: {
+			fontSize: '3rem'
+		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '2.5rem'
 		},
