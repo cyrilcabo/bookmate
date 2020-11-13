@@ -76,6 +76,7 @@ const useStyle = makeStyles(theme => ({
 			width: 320,
 		},
 		[theme.breakpoints.down('sm')]: {
+			display: 'flex',
 			justifyContent: 'center',
 			alignItems: 'center',
 			marginBottom: 50,
@@ -302,8 +303,7 @@ const useStyle = makeStyles(theme => ({
 	inserted: {
 		position: 'relative',
 		minHeight: 415,
-		zIndex: 1,
-		//backgroundImage: 'linear-gradient(to bottom left, #124f4f, 60%, transparent)',
+		zIndex: 2,
 	},
 	insertedRootBg: {
 		position: 'absolute',
@@ -361,6 +361,7 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	datePickerContainer: {
+		zIndex: 2,
 		width: '60%',
 		[theme.breakpoints.down('md')]: {
 			width: '70%',
@@ -370,7 +371,9 @@ const useStyle = makeStyles(theme => ({
 		}
 	},
 	filterContainer: {
+		zIndex: 2,
 		width: '50%',
+		position: 'relative',
 		[theme.breakpoints.down('md')]: {
 			width: '60%',
 		},
