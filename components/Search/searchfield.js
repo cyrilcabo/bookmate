@@ -50,7 +50,12 @@ const SearchField = (props) => {
 				}
 				<Hidden mdUp>
 					<Divider className={classes.divider} orientation="vertical" />
-					<FilterSettings filters={props.filters} setFilter={props.setFilter} unsetFilter={props.unsetFilter} filtered={props.filtered}/>
+					<FilterSettings 
+						filters={props.filters} 
+						setFilter={props.setFilter} 
+						unsetFilter={props.unsetFilter} 
+						filtered={props.filtered}
+					/>
 				</Hidden>
 			</Paper>
 		</React.Fragment>
