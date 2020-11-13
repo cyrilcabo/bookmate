@@ -3,6 +3,9 @@ import Filter from './filter';
 import makeStyles from '@material-ui/styles/makeStyles';
 
 const useStyle = makeStyles({
+	container: {
+		zIndex: 9999,
+	},
 	root: {
 		padding: 5,
 		zIndex: 2,
@@ -12,7 +15,7 @@ const useStyle = makeStyles({
 const FilterOptions = (props) => {
 	const classes = useStyle();
 	return (
-		<Popper anchorEl={props.anchorEl} open={props.open} placement="bottom" transition>
+		<Popper anchorEl={props.anchorEl} open={props.open} placement="bottom" transition className={classes.container}>
 			{({TransitionProps}) =>(
 				<Fade {...TransitionProps} timeout={150}>
 					<ClickAwayListener onClickAway={props.handleClickAway}>
