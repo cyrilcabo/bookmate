@@ -314,13 +314,13 @@ const useStyle = makeStyles(theme => ({
 		opacity: '0.1'
 	},
 	insertedTitle: {
-		marginTop: 55,
+		marginTop: 20,
 		zIndex: 2,
 		[theme.breakpoints.down('sm')]: {
-			marginTop: 48,
+			marginTop: 15,
 		},
 		[theme.breakpoints.down('xs')]: {
-			marginTop: 50,
+			marginTop: 15,
 		},
 		'& > h2': {
 			margin: 0,
@@ -343,21 +343,27 @@ const useStyle = makeStyles(theme => ({
 			marginBottom: 10,
 		},
 		position: 'relative',
+		width: '80%',
+		height: '82%',
+		[theme.breakpoints.down('sm')]: {
+			width: '80%',
+			minHeight: '88%',
+		},
+		[theme.breakpoints.down('xs')]: {
+			width: '100%',
+			minHeight: '95%',
+		}
 	},
 	insertedBg: {
 		position: 'absolute',
-		width: '80%',
-		height: '82%',
 		backgroundColor: '#f9f9f9',
 		opacity: '0.95',
-		top: '9%',
-		bottom: '9%',
+		height: '100%',
+		width: '100%',
 		zIndex: 0,
 		[theme.breakpoints.down('xs')]: {
 			width: '100%',
-			height: '88%',
-			top: '6%',
-			bottom: '6%'
+			height: '100%',
 		}
 	},
 	datePickerContainer: {
@@ -495,9 +501,9 @@ const Index = (props) => {
 			</Grid>
 			<div className={classes.combinedContainer}>
 				<LowerDesign className={classes.combinedDesign} /> 
-				<Grid item className={classes.inserted} container justify={"center"}>
+				<Grid item className={classes.inserted} container justify="center" alignItems="center">
 					<div className={classes.insertedRootBg} />
-					<Grid item container xs={11} md={10} direction="column" alignItems="center" className={classes.insertedContainer}>
+					<Grid item container direction="column" alignItems="center" className={classes.insertedContainer}>
 						<div className={classes.insertedBg} />
 						<Grid item className={classes.insertedTitle}>
 							<h2> Find your favorite property! </h2>
