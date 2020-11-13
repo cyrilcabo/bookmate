@@ -27,7 +27,8 @@ const useStyle = makeStyles({
 	resultItem: {
 		'&:hover' : {
 			backgroundColor: "#cecece",
-		}
+		},
+		cursor: 'pointer'
 	}
 });
 
