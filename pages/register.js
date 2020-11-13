@@ -32,7 +32,11 @@ const useStyle = makeStyles(theme => ({
 
 const Register = (props) => {
 	const classes = useStyle();
-	const [fieldState, setFieldState] = React.useState({username: {error: false, msg: ''}, password: {error: false, msg: ''}, confirmpassword: {error: false, msg: ''}});
+	const [fieldState, setFieldState] = React.useState({
+		username: {error: false, msg: ''}, 
+		password: {error: false, msg: ''}, 
+		confirmpassword: {error: false, msg: ''}
+	});
 	const [user, setUser] = React.useState({username: '', password: '', confirmpassword: ''});
 	const [message, setMessage] = React.useState("");
 	
@@ -70,7 +74,7 @@ const Register = (props) => {
 				const response = await apiValidateUsername(user.username);
 				setFieldState({
 					...fieldState,
-					username: (response.status==="ok") ?fieldState['username'].error ?fieldState['username'] :{error: false, msg: ''} :{error: true, msg: 'Username already exists'},
+					username: (response.status==="ok") ?{error: false, msg: ''} :{error: true, msg: 'Username already exists'},
 				});
 				break;
 			case 'password':
