@@ -386,6 +386,8 @@ const useStyle = makeStyles(theme => ({
 	},
 	locationSearchContainer: {
 		width: '60%',
+		zIndex: 3,
+		position: 'relative',
 		[theme.breakpoints.down('md')]: {
 			width: '70%',
 		},
