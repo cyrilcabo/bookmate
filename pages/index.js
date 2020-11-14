@@ -195,11 +195,11 @@ const useStyle = makeStyles(theme => ({
 	perk: {
 		width: '30%',
 		[theme.breakpoints.down('sm')]: {
-			width: '25%'
+			width: '25%',
+			justifyContent: 'center',
 		},
 		[theme.breakpoints.down('xs')]: {
 			width: '80%',
-			justifyContent: 'center',
 			marginBottom: 15,
 		}
 	},
