@@ -1,8 +1,10 @@
 import App from 'next/app';
 import {Provider} from 'react-redux';
-import withRedux from 'next-redux-wrapper';
-import makeStore from '../redux/reducers/reducers';
 
+import withRedux from 'next-redux-wrapper';
+import {useRouter} from 'next/router';
+
+import makeStore from '../redux/reducers/reducers';
 import {setUser} from '../redux/actions/actions';
 
 import Layout from '../components/layout';
@@ -11,8 +13,20 @@ import '../src/styles/index.css';
 
 import {apiAuthenticateUser} from '../utils/api';
 import ScrollToTop from '../utils/scrolltotop';
+import * as gtag from '../utils/withGA';
 
 const BookMate = ({Component, pageProps, store, custom}) => {
+	const router = useRouter();
+	React.useEffect(() => {
+		const handleRouteChange = (url) => {
+	      gtag.pageview(url)
+	    }
+	    router.events.on('routeChangeComplete', handleRouteChange)
+	    return () => {
+	      router.events.off('routeChangeComplete', handleRouteChange)
+	    }
+	}, [router.events]);
+
 	return (
 		<Provider store={store} >
 			<ScrollToTop>
