@@ -90,7 +90,7 @@ app.use(passport.session())
 //Check if user is a guest
 app.use((req, res, next) => {
   if (!req.user && (!req.headers.cookie || !req.session.user)) {
-    res.cookie('bookMate', req.session.id, {httpOnly: true, secure: !dev});
+    res.cookie('bookMate', req.session.id, {httpOnly: true, secure: !dev, maxAge: 31536000000});
     req.session.user = { 
       _id: ObjectId(),
       details: {
