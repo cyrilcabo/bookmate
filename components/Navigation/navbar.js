@@ -27,6 +27,7 @@ const useStyle = makeStyles(theme => ({
 		fontSize: 17,
 		margin: '0px 15px 0px 0px',
 		cursor: 'pointer',
+		fontWeight: 500,
 		'&:hover': {
 			color: '#f1ea50',
 		},
