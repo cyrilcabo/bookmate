@@ -203,7 +203,7 @@ const Top = (props) => {
 							</Hidden>
 						</Paper>
 					</Grid>
-					<Grid item xs={12} md={9} style={{boxShadow: '0px 1px 4px black', backgroundColor: 'white', borderRadius: 2}}>
+					<Grid item xs={12} md={9} style={{boxShadow: '0px 0px 2px black', backgroundColor: 'white', borderRadius: 2}}>
 						<InfiniteScroll
 							dataLength={properties[search.id].properties.length}
 							next={fetchNext}
